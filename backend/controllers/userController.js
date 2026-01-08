@@ -21,6 +21,18 @@ const getOneUser= async (req,res)=>{
     }
 }
 
+const getLikedPosts = async(req,res)=>{
+    try {
+        const id = req.params.id
+        const user = await UserModel.findById(id).populate('likedPosts')
+        const likedPosts = user.likedPosts
+        res.status(200).json(likedPosts)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const createUser=async(req,res)=>{
    try {
         const data = req.body
@@ -55,4 +67,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUser,createUser,updateUser,deleteUser}
+export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts}
