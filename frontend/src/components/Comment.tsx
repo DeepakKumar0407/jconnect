@@ -1,10 +1,11 @@
-import FormPost from "./FormPost"
 
-const Comment = () => {
+const Comment = ({postId}:{postId:string}) => {
   return (
     <div>
+      <p>cycle all comments build a tree</p>
       <p>icon</p><p>username</p>
-      <FormPost/>
+      <p>text content</p>
+      <p>image content</p>
     </div>
   )
 }

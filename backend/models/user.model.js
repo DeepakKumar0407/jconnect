@@ -21,14 +21,7 @@ const UserSchema = new Schema({
     },
     password:{
         type:String,
-        required:true,
-        validate:{
-            validator:function (p) {
-                if (!this.isModified("password")) return true;
-                return /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/.test(p);
-            },
-            message:"Invalid Password"
-        }
+        required:true
     },
     email:{
         type:String,
@@ -78,9 +71,22 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save',async function(){
     try {
-        if(!this.isModified("password")) return
+        if (!this.isModified('password')) return
         const salt = await bcrypt.genSalt(10)
         this.password = await bcrypt.hash(this.password,salt)
+    } catch (error) {
+        console.log(error)
+    }
+})
+UserSchema.pre('updateOne',async function(){
+    try {
+        const salt = await bcrypt.genSalt(10)
+        const password = await bcrypt.hash(this.getUpdate().password||this.getUpdate().$set?.password,salt)
+        if (this.getUpdate().password) {
+            this.getUpdate().password = password;
+        } else {
+            this.getUpdate().$set.password = password;
+        }
     } catch (error) {
         console.log(error)
     }

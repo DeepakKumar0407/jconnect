@@ -1,5 +1,6 @@
 import {CommentModel} from "../models/comment.model.js"
-
+import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
 
 const getAllCommentsByPost=async(req,res)=>{
     try {
@@ -26,7 +27,19 @@ const getAllCommentsByUser= async(req,res)=>{
 
 const createComment =async(req,res)=>{
     try {
-        const data = req.body
+        const data = {...req.body}
+        let imageUrl = null
+        if(req.file){
+            imageUrl = await new Promise((resolve,reject)=>{
+                const stream = cloudinary.uploader.upload_stream(({folder:"comment_Images",resource_type:"image"}),(error,result)=>{
+                    if(error) reject(error)
+                    if(!result.secure_url) return reject(new Error("No URL"))
+                    resolve(result.secure_url)
+                })
+                streamifier.createReadStream(req.file.buffer).pipe(stream);
+            })
+        }
+        data.imageContent = imageUrl
         const comment = await CommentModel.create(data)
         res.status(200).json(comment)
     } catch (error) {

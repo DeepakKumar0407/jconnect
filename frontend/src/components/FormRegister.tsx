@@ -1,17 +1,61 @@
+"use client"
+
+import { useState } from "react"
+
+export interface iUser {
+  name:string;
+  userName:string;
+  email:string;
+  phone:string;
+  dob:string;
+  password:string;
+}
 const FormRegister = () => {
+  const initialData:iUser = {
+    name:'',
+    userName:'',
+    email:'',
+    phone:'',
+    dob:'',
+    password:''
+  }
+  const [userData,setUserData] = useState(initialData)
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     const {name,value} = e.target
-    console.log(name,value)
+    setUserData(state=>({
+      ...state,
+      [name]:value
+    }))
+  }
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+    try {
+      const isValidPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/.test(userData.password)
+      if(!isValidPassword){
+        throw new Error('invalid Password')
+      }
+      await fetch('http://localhost:3000/users',{
+      method:'POST',
+      headers: {
+    'Content-Type': 'application/json'
+  },
+    body:JSON.stringify(userData)
+    })
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <div className="w-full">
       <h1>Register</h1>
-      <form className="w-full flex flex-col justify-baseline gap-4">
-        <label htmlFor="name">name</label><input type="text" name="name" value="" onChange={handleChange} placeholder="name" required></input>
-        <label htmlFor="username">username</label><input type="text" name="username" value="" onChange={handleChange} placeholder="username" required></input>
-        <label htmlFor="email">email</label><input type="email" name="email" value="" onChange={handleChange} placeholder="email" required></input>
-        <label htmlFor="dob">dob</label><input type="date" name="dob" value="" onChange={handleChange} placeholder="dob" required></input>
-        <label htmlFor="password">password</label><input type="password" name="password" value="" onChange={handleChange} placeholder="password" required></input>
+      <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
+        <label htmlFor="name">name</label><input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" required></input>
+        <label htmlFor="username">username</label><input type="text" name="userName" value={userData.userName} onChange={handleChange} placeholder="username" required></input>
+        <label htmlFor="email">email</label><input type="email" name="email" value={userData.email} onChange={handleChange} placeholder="email" required></input>
+        <label htmlFor="phone">phone</label><input type="tel" name="phone" value={userData.phone} onChange={handleChange} placeholder="phone" required></input>
+        <label htmlFor="dob">dob</label><input type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" required></input>
+        <label htmlFor="password">password</label><input type="password" name="password" value={userData.password} onChange={handleChange} placeholder="password" required></input>
+        <button>Submit</button>
       </form>
     </div>
   )
