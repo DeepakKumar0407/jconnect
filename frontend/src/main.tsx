@@ -34,7 +34,7 @@ createRoot(document.getElementById('root')!).render(
     <Route path={"/search"} element={<SearchResults/>}/>
     <Route path={"/settings"} element={<Setting/>}/>
     <Route path={"/notifications"} element={<Notifications/>}/>
-     <Route path={"/post"} element={<Post/>}/>
+    <Route path={"/post"} element={<Post/>}/>
     </Routes>
     <FriendsList/>
     <Footer/>

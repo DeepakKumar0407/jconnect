@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import commentRoutes from "./routes/commentRoutes.js"
+import notificationRoutes from "./routes/notificationRoutes.js"
 import bodyParser from "body-parser"
 import cloudinary from "./cloudinaryConfig.js";
 import 'dotenv/config'
@@ -35,6 +36,7 @@ await ConnectDb()
 app.use("/users",userRoutes)
 app.use("/posts",postRoutes)
 app.use("/comments",commentRoutes)
+app.use("/notifications",notificationRoutes)
 
 app.listen(port,()=>{
   console.log(`listining at port ${port}`)

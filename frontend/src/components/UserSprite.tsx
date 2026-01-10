@@ -1,4 +1,4 @@
-const UserSprite = () => {
+const UserSprite = ({friend}:{friend:object}) => {
   return (
     <div>
       <p>profile pic</p>

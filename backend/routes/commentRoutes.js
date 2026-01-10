@@ -10,7 +10,7 @@ const upload = multer({
 router.get('/:id/post',getAllCommentsByPost)
 router.get('/:id/user',getAllCommentsByUser)
 router.post('/',upload.single('imageContent'),createComment)
-router.post('/:id/comment',createReply)
+router.post('/:id/comment',upload.single('imageContent'),createReply)
 router.patch('/:id',updateComment)
 router.delete('/:id',deleteComment)
 

@@ -11,6 +11,18 @@ const getAllUser= async (req,res)=>{
     }
 }
 
+const getAllFriends= async (req,res)=>{
+    try {
+        const email = ""
+        const followers = await UserModel.find({email:email},{followers:1})
+        const following = await UserModel.find({email:email},{following:1})
+        res.status(200).json(followers,following)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const getOneUser= async (req,res)=>{
     try {
         const id = req.params.id
@@ -95,4 +107,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser}
+export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends}

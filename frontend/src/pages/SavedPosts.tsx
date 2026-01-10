@@ -4,9 +4,7 @@ const SavedPosts = () => {
   return (
     <div className="div">
       <p>Saved Posts</p>
-      <PostStructure/>
-      <PostStructure/>
-      <PostStructure/>
+      <PostStructure post={{}}/>
     </div>
   )
 }

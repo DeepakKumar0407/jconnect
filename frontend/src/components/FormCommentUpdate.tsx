@@ -1,21 +1,7 @@
 
 import { useState } from "react";
-
-export interface iComment {
-        textContent:string;
-        imageContent?:File|null;
-        parentId?:string;
-        postId:string;
-    }
-const FormComment = ({postId,parentId}:{postId:string,parentId?:string}) => {
-   
-    const initialData:iComment = {
-        textContent:"",
-        postId:"",
-        imageContent:null
-    }
-    const [comment,setComment]= useState(initialData)
-
+const FormCommentUpdate = ({postId,parentId,comm}:{postId:string,parentId?:string,comm:object}) => {
+    const [comment,setComment]= useState(comm)
     const handleChange=(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{
         const {name,value} = e.target
         setComment(state=>({
@@ -52,4 +38,4 @@ const FormComment = ({postId,parentId}:{postId:string,parentId?:string}) => {
     </div>
   )
 }
-export default FormComment
+export default FormCommentUpdate

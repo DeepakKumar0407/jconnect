@@ -1,4 +1,5 @@
 import {CommentModel} from "../models/comment.model.js"
+import { NotificationModel } from "../models/notification.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
@@ -27,7 +28,9 @@ const getAllCommentsByUser= async(req,res)=>{
 
 const createComment =async(req,res)=>{
     try {
+        const userId = '69615b843b9d8533212f8503'
         const data = {...req.body}
+        data.userId = userId
         let imageUrl = null
         if(req.file){
             imageUrl = await new Promise((resolve,reject)=>{
@@ -41,7 +44,13 @@ const createComment =async(req,res)=>{
         }
         data.imageContent = imageUrl
         const comment = await CommentModel.create(data)
-        res.status(200).json(comment)
+        const notificationData = {
+            type:'comment',
+            userId:userId,
+            id:comment._id
+        }
+        const notification = await NotificationModel.create(notificationData)
+        res.status(200).json('success')
     } catch (error) {
         console.log(error)
         res.status(500).json(error)
@@ -52,8 +61,26 @@ const createReply = async()=>{
     try {
         const id = req.params.id
         const data = req.body
+        let imageUrl = null
+        if(req.file){
+            imageUrl = await new Promise((resolve,reject)=>{
+                const stream = cloudinary.uploader.upload_stream(({folder:"comment_Images",resource_type:"image"}),(error,result)=>{
+                    if(error) reject(error)
+                    if(!result.secure_url) return reject(new Error("No URL"))
+                    resolve(result.secure_url)
+                })
+                streamifier.createReadStream(req.file.buffer).pipe(stream);
+            })
+        }
+        data.imageContent = imageUrl
         const reply = await CommentModel.create({...data,parentId:id})
-        res.status(200).json(reply)
+        const notificationData = {
+            type:'comment',
+            userId:userId,
+            id:comment._id
+        }
+        const notification = await NotificationModel.create(notificationData)
+        res.status(200).json('success')
     } catch (error) {
         console.log(error)
         res.status(500).json(error)
