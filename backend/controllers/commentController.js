@@ -1,6 +1,7 @@
 import {CommentModel} from "../models/comment.model.js"
 import {PostModel} from "../models/post.model.js"
 import { NotificationModel } from "../models/notification.model.js";
+import {UserModel} from '../models/user.model.js'
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
@@ -28,13 +29,20 @@ const getAllCommentsByUser= async(req,res)=>{
 }
 
 const getSingleComment = async(req,res)=>{
-
+    try {
+        const commentId = req.params.id
+        const commnet = await CommentModel.findOne({_id:commentId})
+        res.status(200).json(commnet)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
 }
 
 const getLike = async(req,res)=>{
     try {
         const commentId = req.params.id
-        const email = 'deepak.kumar016211@gmail.com'
+        const email = '9868282600bull@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
         const likeStatus = await CommentModel.exists({_id:commentId,likes:user._id})
         res.status(200).json(likeStatus)
@@ -94,35 +102,6 @@ const createComment =async(req,res)=>{
     }
 }
 
-const createReply = async()=>{
-    try {
-        const id = req.params.id
-        const data = req.body
-        let imageUrl = null
-        if(req.file){
-            imageUrl = await new Promise((resolve,reject)=>{
-                const stream = cloudinary.uploader.upload_stream(({folder:"comment_Images",resource_type:"image"}),(error,result)=>{
-                    if(error) reject(error)
-                    if(!result.secure_url) return reject(new Error("No URL"))
-                    resolve(result.secure_url)
-                })
-                streamifier.createReadStream(req.file.buffer).pipe(stream);
-            })
-        }
-        data.imageContent = imageUrl
-        const reply = await CommentModel.create({...data,parentId:id})
-        const notificationData = {
-            type:'comment',
-            userId:userId,
-            id:comment._id
-        }
-        const notification = await NotificationModel.create(notificationData)
-        res.status(200).json('success')
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error)
-    }
-}
 
 const updateComment = async(req,res)=>{
     try {
@@ -139,11 +118,11 @@ const updateComment = async(req,res)=>{
 const updateLike = async(req,res)=>{
     try {
         const commentId = req.params.id
-        const email = 'deepak.kumar016211@gmail.com'
+        const email = '9868282600bull@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
         const checkLike = await CommentModel.exists({_id:commentId,likes:user._id})
         if(checkLike===null){
-            const comment = await PostModel.findOneAndUpdate(
+            const comment = await CommentModel.findOneAndUpdate(
             {_id:commentId,likes:{$ne:user._id}},
             {
             $addToSet: { likes: user._id },
@@ -152,26 +131,25 @@ const updateLike = async(req,res)=>{
             { new: true }
         );
         if(comment){
-            await UserModel.findByIdAndUpdate(
-                user._id,
-                {$addToSet:{likedPosts:post._id}}
-            )
+            const commentUserId = await CommentModel.findOne({_id:commentId},{userId:1,postId:1})
+            const notificationData = {
+                type:'like',
+                userId:user._id,
+                postId:commentUserId.postId,
+                notifOnid:commentId,
+                notifForid:commentUserId.userId
+            }
+            const notification = await NotificationModel.create(notificationData)
         }
         }else{
-            const comment = await PostModel.findOneAndUpdate(
+            const comment = await CommentModel.findOneAndUpdate(
             {_id:commentId,likes:{$eq:user._id}},
             {
             $pull: { likes: user._id },
             $inc: { likesCount: -1 }
             },
             { new: true }
-        );
-        if(comment){
-            await UserModel.findByIdAndUpdate(
-                user._id,
-                {$pull:{likedPosts:post._id}}
-            )
-        }
+        )
         }
         res.status(200).json('success')
     } catch (error) {
@@ -180,7 +158,7 @@ const updateLike = async(req,res)=>{
     }
 }
 
-const deleteComment = async()=>{
+const deleteComment = async(req,res)=>{
     try {
     const id = req.params.id
     const comment = await CommentModel.deleteOne({_id:id})
@@ -191,4 +169,4 @@ const deleteComment = async()=>{
     }
 }
 
-export {getAllCommentsByPost,getAllCommentsByUser,createComment,updateComment,deleteComment,createReply,updateLike,getLike,getSingleComment}
+export {getAllCommentsByPost,getAllCommentsByUser,createComment,updateComment,deleteComment,updateLike,getLike,getSingleComment}

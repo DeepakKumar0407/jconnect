@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
-import FormComment from "./FormComment"
+import CommentStructure from "./CommentStructure"
 
 const Comment = ({postId}:{postId:string}) => {
   const [comments,setComments] = useState<any>()
@@ -11,15 +11,10 @@ const Comment = ({postId}:{postId:string}) => {
       setComments(data)
     }
     getComments()
-  },[])
+  },[postId])
   return (
     comments?.map((comment:any)=>(
-      <div key={comment._id}>
-      <h1 >comment</h1>
-      <p >{comment.textContent}</p>
-      <img src={comment.imageContent} className="w-48 h-27"></img>
-      <FormComment postId={comment.postId} parentId={comment._id}/>
-      </div>
+      <CommentStructure comment={comment}/>
     ))
     // <div>
     //   <p>cycle all comments build a tree</p>

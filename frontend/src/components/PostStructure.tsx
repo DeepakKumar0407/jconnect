@@ -31,6 +31,11 @@ const PostStructure = ({post}:{post:any}) => {
       method:'PATCH'
     })
     console.log('clicked')
+  }
+  const handleDelete = async()=>{
+    await fetch(`http://localhost:3000/posts/${post._id}`,{
+      method:"DELETE"
+    })
   }  
   return (
     <div>
@@ -41,6 +46,7 @@ const PostStructure = ({post}:{post:any}) => {
         <source src={post.videoContent} type="video/mp4"></source>
       </video>
       <FormComment postId={post._id}/><p>{likeStatus?(<button onClick={handleLikeClick}>Unlike</button>):(<button onClick={handleLikeClick}>Like</button>)}</p><p><button onClick={handleSaveClick}>Save</button></p>
+      <p><button onClick={handleDelete}>Delete</button></p>
       <Comment postId={post._id}/>
     </div>
   )

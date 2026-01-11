@@ -1,4 +1,4 @@
-import { userInfo } from "node:os";
+import { NotificationModel } from "../models/notification.model.js"
 import { PostModel } from "../models/post.model.js"
 import {UserModel} from "../models/user.model.js"
 import {v2 as cloudinary} from 'cloudinary'
@@ -39,7 +39,7 @@ const getOnePost= async (req,res)=>{
 const getLike = async(req,res)=>{
     try {
         const postId = req.params.id
-        const email = 'deepak.kumar016211@gmail.com'
+        const email = '9868282600bull@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
         const likeStatus = await PostModel.exists({_id:postId,likes:user._id})
         res.status(200).json(likeStatus)
@@ -130,7 +130,7 @@ const updatePost=async(req,res)=>{
 const updateLike = async(req,res)=>{
     try {
         const postId = req.params.id
-        const email = 'deepak.kumar016211@gmail.com'
+        const email = '9868282600bull@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
         const checkLike = await PostModel.exists({_id:postId,likes:user._id})
         if(checkLike===null){
@@ -147,6 +147,15 @@ const updateLike = async(req,res)=>{
                 user._id,
                 {$addToSet:{likedPosts:post._id}}
             )
+             const postUserId = await PostModel.findOne({_id:postId},{userId:1})
+                const notificationData = {
+                type:'like',
+                userId:user._id,
+                postId:postId,
+                notifOnid:postId,
+                notifForid:postUserId.userId
+                }
+                const notification = await NotificationModel.create(notificationData)
         }
         }else{
             const post = await PostModel.findOneAndUpdate(
