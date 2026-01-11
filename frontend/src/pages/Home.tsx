@@ -14,8 +14,9 @@ const Home = () => {
   },[])
   console.log(posts,"posts")
   return (
-    <div className="div">
+    <div className="div pb-15">
       <h1>Home</h1>
+      
       {posts?.map((post:any)=>(
         <div key={post._id}>
           <PostStructure post={post}/>

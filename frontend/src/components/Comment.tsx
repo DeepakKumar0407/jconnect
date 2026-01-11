@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
+import FormComment from "./FormComment"
 
 const Comment = ({postId}:{postId:string}) => {
   const [comments,setComments] = useState<any>()
@@ -17,6 +18,7 @@ const Comment = ({postId}:{postId:string}) => {
       <h1 >comment</h1>
       <p >{comment.textContent}</p>
       <img src={comment.imageContent} className="w-48 h-27"></img>
+      <FormComment postId={comment.postId} parentId={comment._id}/>
       </div>
     ))
     // <div>

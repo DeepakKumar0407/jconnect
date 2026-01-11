@@ -7,7 +7,7 @@ export interface iComment {
         parentId?:string;
         postId:string;
     }
-const FormComment = ({postId,parentId}:{postId:string,parentId?:string}) => {
+const FormComment = ({postId,parentId}:{postId:string,parentId?:string|null}) => {
    
     const initialData:iComment = {
         textContent:"",
@@ -23,15 +23,15 @@ const FormComment = ({postId,parentId}:{postId:string,parentId?:string}) => {
             [name]:value,
             postId:postId,
         }))
-    }
-    const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
-        e.preventDefault()
         if(parentId){
             setComment(state=>({
                 ...state,
                 parentId:parentId
             }))
         }
+    }
+    const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
         const data = new FormData()
         Object.entries(comment).forEach(([key,value])=>{
             data.append(key,value)
@@ -41,6 +41,7 @@ const FormComment = ({postId,parentId}:{postId:string,parentId?:string}) => {
             body:data
         }
         )
+        console.log(comment)
     }
   return (
     <div>

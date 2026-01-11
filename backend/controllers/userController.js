@@ -13,7 +13,7 @@ const getAllUser= async (req,res)=>{
 
 const getAllFriends= async (req,res)=>{
     try {
-        const email = ""
+        const email = "deepak.kumar016211@gmail.com"
         const followers = await UserModel.find({email:email},{followers:1})
         const following = await UserModel.find({email:email},{following:1})
         res.status(200).json(followers,following)
@@ -64,6 +64,19 @@ const getLikedPosts = async(req,res)=>{
     }
 }
 
+
+const getSavedPosts = async(req,res)=>{
+      try {
+        const id = req.params.id
+        const user = await UserModel.findById(id).populate('savedPosts')
+        const savedPosts = user.likedPosts
+        res.status(200).json(savedPosts)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const createUser=async(req,res)=>{
    try {
         const data = req.body
@@ -96,6 +109,25 @@ const updateUser=async(req,res)=>{
     }
 }
 
+const updateSavedStatus = async(req,res)=>{
+    try {
+        const postId = req.params.id
+        const email = "deepak.kumar016211@gmail.com"
+        const isSaved = await UserModel.exists({email:email,savedPosts:postId})
+        console.log(isSaved)
+        if(isSaved===null){
+        await UserModel.findOneAndUpdate({email:email},{$addToSet:{savedPosts:postId}})
+        }else{
+        await UserModel.findOneAndUpdate({email:email},{$pull:{savedPosts:postId}})
+        }
+        res.status(200).json('sucess')
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+
+}
+
 const deleteUser=async(req,res)=>{
     try {
         const id = req.params.id
@@ -107,4 +139,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends}
+export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends,updateSavedStatus,getSavedPosts}

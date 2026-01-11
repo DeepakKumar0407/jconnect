@@ -1,4 +1,5 @@
 import {CommentModel} from "../models/comment.model.js"
+import {PostModel} from "../models/post.model.js"
 import { NotificationModel } from "../models/notification.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
@@ -26,9 +27,26 @@ const getAllCommentsByUser= async(req,res)=>{
     }   
 }
 
+const getSingleComment = async(req,res)=>{
+
+}
+
+const getLike = async(req,res)=>{
+    try {
+        const commentId = req.params.id
+        const email = 'deepak.kumar016211@gmail.com'
+        const user = await UserModel.findOne({email:email},{_id:1})
+        const likeStatus = await CommentModel.exists({_id:commentId,likes:user._id})
+        res.status(200).json(likeStatus)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const createComment =async(req,res)=>{
     try {
-        const userId = '69615b843b9d8533212f8503'
+        const userId = '6963847e565c7f293a2d9279'
         const data = {...req.body}
         data.userId = userId
         let imageUrl = null
@@ -44,12 +62,31 @@ const createComment =async(req,res)=>{
         }
         data.imageContent = imageUrl
         const comment = await CommentModel.create(data)
-        const notificationData = {
+        const postId = comment.postId
+        const parentId = comment.parentId
+        if(parentId===null){
+            const postUserId = await PostModel.findOne({_id:postId},{userId:1})
+            const notificationData = {
             type:'comment',
             userId:userId,
-            id:comment._id
+            postId:postId,
+            notifOnid:postId,
+            notifContent:comment._id,
+            notifForid:postUserId.userId
+            }
+            const notification = await NotificationModel.create(notificationData)
+        }else{
+            const commentUserId = await CommentModel.findOne({_id:parentId},{userId:1})
+            const notificationData = {
+            type:'comment',
+            userId:userId,
+            postId:postId,
+            notifOnid:parentId,
+            notifContent:comment._id,
+            notifForid:commentUserId.userId
+            }
+            const notification = await NotificationModel.create(notificationData)
         }
-        const notification = await NotificationModel.create(notificationData)
         res.status(200).json('success')
     } catch (error) {
         console.log(error)
@@ -99,6 +136,50 @@ const updateComment = async(req,res)=>{
     }
 }
 
+const updateLike = async(req,res)=>{
+    try {
+        const commentId = req.params.id
+        const email = 'deepak.kumar016211@gmail.com'
+        const user = await UserModel.findOne({email:email},{_id:1})
+        const checkLike = await CommentModel.exists({_id:commentId,likes:user._id})
+        if(checkLike===null){
+            const comment = await PostModel.findOneAndUpdate(
+            {_id:commentId,likes:{$ne:user._id}},
+            {
+            $addToSet: { likes: user._id },
+            $inc: { likesCount: 1 }
+            },
+            { new: true }
+        );
+        if(comment){
+            await UserModel.findByIdAndUpdate(
+                user._id,
+                {$addToSet:{likedPosts:post._id}}
+            )
+        }
+        }else{
+            const comment = await PostModel.findOneAndUpdate(
+            {_id:commentId,likes:{$eq:user._id}},
+            {
+            $pull: { likes: user._id },
+            $inc: { likesCount: -1 }
+            },
+            { new: true }
+        );
+        if(comment){
+            await UserModel.findByIdAndUpdate(
+                user._id,
+                {$pull:{likedPosts:post._id}}
+            )
+        }
+        }
+        res.status(200).json('success')
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const deleteComment = async()=>{
     try {
     const id = req.params.id
@@ -110,4 +191,4 @@ const deleteComment = async()=>{
     }
 }
 
-export {getAllCommentsByPost,getAllCommentsByUser,createComment,updateComment,deleteComment,createReply}
+export {getAllCommentsByPost,getAllCommentsByUser,createComment,updateComment,deleteComment,createReply,updateLike,getLike,getSingleComment}

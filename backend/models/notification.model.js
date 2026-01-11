@@ -11,10 +11,24 @@ const NotificationSchema = new Schema({
         ref:'User',
         required:true
     },
-    id:{
+    postId:{
+        type:Schema.Types.ObjectId,
+        ref:'Post',
+        required:true
+    },
+    notifOnid:{
         type:String,
         required:true
-    }
+    },
+    notifContent:{
+        type:Schema.Types.ObjectId,
+        ref:'Comment',
+    },
+    notifForid:{
+        type:Schema.Types.ObjectId,
+        required:'User'
+    },
+    
 
 },{timestamps:true})
 

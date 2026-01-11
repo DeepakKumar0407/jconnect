@@ -36,6 +36,19 @@ const getOnePost= async (req,res)=>{
     }
 }
 
+const getLike = async(req,res)=>{
+    try {
+        const postId = req.params.id
+        const email = 'deepak.kumar016211@gmail.com'
+        const user = await UserModel.findOne({email:email},{_id:1})
+        const likeStatus = await PostModel.exists({_id:postId,likes:user._id})
+        res.status(200).json(likeStatus)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const createPost=async(req,res)=>{
    try {
         const email = "deepak.kumar016211@gmail.com"
@@ -119,7 +132,9 @@ const updateLike = async(req,res)=>{
         const postId = req.params.id
         const email = 'deepak.kumar016211@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
-        const post = await PostModel.findOneAndUpdate(
+        const checkLike = await PostModel.exists({_id:postId,likes:user._id})
+        if(checkLike===null){
+            const post = await PostModel.findOneAndUpdate(
             {_id:postId,likes:{$ne:user._id}},
             {
             $addToSet: { likes: user._id },
@@ -133,12 +148,29 @@ const updateLike = async(req,res)=>{
                 {$addToSet:{likedPosts:post._id}}
             )
         }
+        }else{
+            const post = await PostModel.findOneAndUpdate(
+            {_id:postId,likes:{$eq:user._id}},
+            {
+            $pull: { likes: user._id },
+            $inc: { likesCount: -1 }
+            },
+            { new: true }
+        );
+        if(post){
+            await UserModel.findByIdAndUpdate(
+                user._id,
+                {$pull:{likedPosts:post._id}}
+            )
+        }
+        }
         res.status(200).json('success')
     } catch (error) {
         console.log(error)
         res.status(500).json(error)
     }
 }
+
 
 const deletePost=async(req,res)=>{
     try {
@@ -151,4 +183,4 @@ const deletePost=async(req,res)=>{
     }
 }
 
-export {getAllPosts,getAllPostsByUser,getOnePost,createPost,updatePost,deletePost,updateLike}
+export {getAllPosts,getAllPostsByUser,getOnePost,createPost,updatePost,deletePost,updateLike,getLike}
