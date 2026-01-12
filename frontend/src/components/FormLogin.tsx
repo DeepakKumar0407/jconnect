@@ -1,9 +1,6 @@
 import { useState } from "react";
+import type { iLogin } from "./interfaces";
 
-export interface iLogin {
-  email:string;
-  password:string;
-}
 const FormLogin = () => {
   const initialData:iLogin = {
     email:"",

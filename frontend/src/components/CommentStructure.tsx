@@ -1,7 +1,7 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
 import FormComment from "./FormComment"
-const CommentStructure = ({comment}:{comment:any}) => {
+import type { CommentNode } from "./interfaces"
+const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
     const [likeStatus,setLikeStatus] = useState(false)
     useEffect(()=>{
         const getLikeStatus = async()=>{
@@ -29,14 +29,23 @@ const CommentStructure = ({comment}:{comment:any}) => {
     })
   }  
   return (
-    <div key={comment._id}>
-      <h1 >comment</h1>
-      <p >{comment.textContent}</p>
+    <div>
+      <div>
+      <h1>{text}</h1>
+      <p>{comment.textContent}</p>
       <img src={comment.imageContent} className="w-48 h-27"></img>
       <p>{likeStatus?(<button onClick={handleLikeClick}>Unlike</button>):(<button onClick={handleLikeClick}>Like</button>)}</p>
       <p><button onClick={handleDelete}>Delete</button></p>
       <FormComment postId={comment.postId} parentId={comment._id}/>
       </div>
+      {comment.children.length>0&&
+      comment.children.map((reply:CommentNode,index:number)=>(
+        <div className="ml-3" key={index}>
+           <CommentStructure comment={reply} text="reply"/>  
+        </div>
+      ))
+      }
+    </div>
   )
 }
 export default CommentStructure

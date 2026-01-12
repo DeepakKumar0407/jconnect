@@ -1,6 +1,8 @@
 
 import { useState } from "react";
-const FormCommentUpdate = ({postId,parentId,comm}:{postId:string,parentId?:string,comm:object}) => {
+import type { iComment } from "./interfaces";
+
+const FormCommentUpdate = ({postId,parentId,comm}:{postId:string,parentId?:string,comm:iComment}) => {
     const [comment,setComment]= useState(comm)
     const handleChange=(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{
         const {name,value} = e.target

@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react"
+import type { iNotification } from "./interfaces"
 
-export interface iNotification {
-  type:string;
-  userId:string;
-  id:string
-}
 const NotificationStructure = () => {
   const initialData:iNotification = {
     type:'',

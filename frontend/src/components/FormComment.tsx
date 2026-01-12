@@ -1,12 +1,7 @@
 
 import { useState } from "react";
+import type { iComment } from "./interfaces";
 
-export interface iComment {
-        textContent:string;
-        imageContent?:File|null;
-        parentId?:string;
-        postId:string;
-    }
 const FormComment = ({postId,parentId}:{postId:string,parentId?:string|null}) => {
    
     const initialData:iComment = {

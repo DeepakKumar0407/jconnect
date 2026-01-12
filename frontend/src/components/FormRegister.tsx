@@ -1,14 +1,8 @@
 
 import { useState } from "react"
+import type { iUser } from "./interfaces"
 
-export interface iUser {
-  name:string;
-  userName:string;
-  email:string;
-  phone:string;
-  dob:string;
-  password:string;
-}
+
 const FormRegister = () => {
   const initialData:iUser = {
     name:'',

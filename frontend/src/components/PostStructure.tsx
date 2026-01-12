@@ -1,9 +1,10 @@
-/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react"
 import Comment from "./Comment"
 import FormComment from "./FormComment"
+import type { iPostRecived } from "./interfaces"
 
-const PostStructure = ({post}:{post:any}) => {
+
+const PostStructure = ({post}:{post:iPostRecived}) => {
   const [likeStatus,setLikeStatus] = useState(false)
   useEffect(()=>{
     const getLikeStatus = async()=>{

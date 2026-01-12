@@ -1,11 +1,8 @@
 
 import { useState } from "react"
+import type { iPost } from "./interfaces"
 
-export interface iPost {
-  textContent:string,
-  imageContent?:File|null,
-  videoContent?:File|null
-}
+
 const FormPost = () => {
   const initialData:iPost={
     textContent:"",

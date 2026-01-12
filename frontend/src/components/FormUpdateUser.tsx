@@ -1,14 +1,7 @@
 
 import { useEffect, useState } from "react"
+import type { iUser } from "./interfaces"
 
-export interface iUser {
-  name:string;
-  userName:string;
-  email:string;
-  phone:string;
-  dob:string;
-  password:string;
-}
 const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
 
   const initialData:iUser = {
