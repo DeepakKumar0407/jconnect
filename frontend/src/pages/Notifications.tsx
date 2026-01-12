@@ -5,9 +5,6 @@ const Notifications = () => {
     <div className="div md:text-base lg:text-xl">
       <h1>Notifications</h1>
       <NotificationStructure/>
-      <NotificationStructure/>
-      <NotificationStructure/>
-      <NotificationStructure/>
     </div>
   )
 }

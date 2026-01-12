@@ -1,18 +1,13 @@
-export interface iPostRecived {
-  _id:string;
-  userName:string;
-  textContent:string;
-  imageContent?:string;
-  videoContent?:string;
-}
 
 export interface iNotification {
+  _id:string;
   type:string;
   userId:string;
   id:string
 }
 
 export interface iUser {
+  _id?:string;
   name:string;
   userName:string;
   email:string;
@@ -25,6 +20,14 @@ export interface iPost {
   textContent:string,
   imageContent?:File|null,
   videoContent?:File|null
+}
+
+export interface iPostRecived {
+  _id:string;
+  userName:string;
+  textContent:string;
+  imageContent?:string;
+  videoContent?:string;
 }
 
 export interface iLogin {

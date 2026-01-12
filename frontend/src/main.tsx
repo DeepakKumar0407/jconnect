@@ -31,7 +31,7 @@ createRoot(document.getElementById('root')!).render(
     <Route path={"/post_details"} element={<PostDetail/>}/>
     <Route path={"/profile"} element={<Profile/>}/>
     <Route path={"/saved"} element={<SavedPosts/>}/>
-    <Route path={"/search"} element={<SearchResults/>}/>
+    <Route path={"/search/:blob"} element={<SearchResults/>}/>
     <Route path={"/settings"} element={<Setting/>}/>
     <Route path={"/notifications"} element={<Notifications/>}/>
     <Route path={"/post"} element={<Post/>}/>

@@ -11,6 +11,17 @@ const getAllUser= async (req,res)=>{
     }
 }
 
+const getSearchUsers = async (req,res)=>{
+    try {
+        const blob = req.params.blob
+        const users = await UserModel.find({$or:[{name:{$regex:blob,$options:'i'}},{userName:{$regex:blob,$options:'i'}},{email:{$regex:blob,$options:'i'}}]})
+        res.status(200).json(users)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const getAllFriends= async (req,res)=>{
     try {
         const email = "deepak.kumar016211@gmail.com"
@@ -69,7 +80,8 @@ const getSavedPosts = async(req,res)=>{
       try {
         const id = req.params.id
         const user = await UserModel.findById(id).populate('savedPosts')
-        const savedPosts = user.likedPosts
+        const savedPosts = user.savedPosts
+        console.log(savedPosts)
         res.status(200).json(savedPosts)
     } catch (error) {
         console.log(error)
@@ -139,4 +151,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends,updateSavedStatus,getSavedPosts}
+export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers}

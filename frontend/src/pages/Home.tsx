@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import PostStructure, { type iPostRecived } from "../components/PostStructure"
+import PostStructure from "../components/PostStructure"
+import type { iPostRecived } from "../components/interfaces"
 
 const Home = () => {
   const [posts,setPosts] = useState<iPostRecived[]>()

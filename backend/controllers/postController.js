@@ -25,6 +25,17 @@ const getAllPostsByUser=async(req,res)=>{
     }
 }
 
+const getSearchPosts= async (req,res)=>{
+    try {
+        const blob = req.params.blob
+        const users = await PostModel.find({$or:[{textContent:{$regex:blob,$options:'i'}},{userName:{$regex:blob,$options:'i'}}]})
+        res.status(200).json(users)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const getOnePost= async (req,res)=>{
     try {
         const id = req.params.id
@@ -192,4 +203,4 @@ const deletePost=async(req,res)=>{
     }
 }
 
-export {getAllPosts,getAllPostsByUser,getOnePost,createPost,updatePost,deletePost,updateLike,getLike}
+export {getAllPosts,getAllPostsByUser,getOnePost,createPost,updatePost,deletePost,updateLike,getLike,getSearchPosts}

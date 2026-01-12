@@ -1,10 +1,13 @@
 import { NotificationModel } from "../models/notification.model.js";
+import { UserModel } from "../models/user.model.js";
 
 const getNotification = async(req,res)=>{
     try {
-        const {userId,postId} = req.body
-        const notification = await NotificationModel.findOne({userId:userId,id:postId}).sort({createdAt:1})
-        res.status(200).json('success')
+        const userEmail = "deepak.kumar016211@gmail.com"
+        const userId = await UserModel.findOne({email:userEmail},{_id:1})
+        const notification = await NotificationModel.find({notifForid:userId._id}).sort({createdAt:1})
+        console.log(notification)
+        res.status(200).json(notification)
     } catch (error) {
         console.log(error)
         res.status(500).json(error)

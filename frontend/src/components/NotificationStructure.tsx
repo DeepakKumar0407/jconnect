@@ -2,25 +2,22 @@ import { useEffect, useState } from "react"
 import type { iNotification } from "./interfaces"
 
 const NotificationStructure = () => {
-  const initialData:iNotification = {
-    type:'',
-    userId:'',
-    id:''
-  }
-  const [notification,setNotification] = useState(initialData)
+ 
+  const [notifications,setNotifications] = useState<iNotification[]>()
   useEffect(()=>{
     const getNotification = async()=>{
       const res = await fetch('http://localhost:3000/notifications')
       const data = await res.json()
-      setNotification(data)
+      setNotifications(data)
     }
     getNotification()
   },[])
   return (
-    <div>
-        <p>commented/liked/shared</p><p>pic of who by</p>
-        <p>post title</p>
-    </div>
+        notifications?.map((notification:iNotification)=>(
+          <div key={notification._id}>
+            <p>{notification.userId}</p>
+          </div>
+        ))
   )
 }
 export default NotificationStructure

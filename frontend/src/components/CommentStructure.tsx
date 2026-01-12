@@ -39,8 +39,8 @@ const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
       <FormComment postId={comment.postId} parentId={comment._id}/>
       </div>
       {comment.children.length>0&&
-      comment.children.map((reply:CommentNode,index:number)=>(
-        <div className="ml-3" key={index}>
+      comment.children.map((reply:CommentNode)=>(
+        <div className="ml-3" key={reply._id}>
            <CommentStructure comment={reply} text="reply"/>  
         </div>
       ))
