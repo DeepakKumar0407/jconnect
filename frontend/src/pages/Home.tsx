@@ -12,7 +12,6 @@ const Home = () => {
    }
    getPosts()
   },[])
-  console.log(posts,"posts")
   return (
     <div className="div pb-15">
       <h1>Home</h1>

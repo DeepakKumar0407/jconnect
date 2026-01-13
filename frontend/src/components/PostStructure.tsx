@@ -24,14 +24,12 @@ const PostStructure = ({post}:{post:iPostRecived}) => {
     await fetch(`http://localhost:3000/posts/${post._id}/like`,{
       method:'PATCH'
     })
-    console.log('clicked')
     setLikeStatus(!likeStatus)
   }
   const handleSaveClick = async()=>{
     await fetch(`http://localhost:3000/users/${post._id}/save`,{
       method:'PATCH'
     })
-    console.log('clicked')
   }
   const handleDelete = async()=>{
     await fetch(`http://localhost:3000/posts/${post._id}`,{

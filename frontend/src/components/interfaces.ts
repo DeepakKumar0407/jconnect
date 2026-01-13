@@ -14,6 +14,8 @@ export interface iUser {
   phone:string;
   dob:string;
   password:string;
+  followers?:string[];
+  following?:string[];
 }
 
 export interface iPost {

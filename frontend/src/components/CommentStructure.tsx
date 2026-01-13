@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import FormComment from "./FormComment"
-import type { CommentNode } from "./interfaces"
+import type { CommentNode, iUser } from "./interfaces"
+import { Link } from "react-router-dom"
 const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
     const [likeStatus,setLikeStatus] = useState(false)
+    const [user,setUser] = useState<iUser>()
     useEffect(()=>{
         const getLikeStatus = async()=>{
           const res = await fetch(`http://localhost:3000/comments/${comment._id}/like`)
@@ -16,11 +18,18 @@ const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
         }
         getLikeStatus()
       },[comment._id])
+      useEffect(()=>{
+        const getUser =async ()=>{
+          const res = await fetch(`http://localhost:3000/users/${comment.userId}/id`)
+          const data = await res.json()
+          setUser(data)
+        }
+        getUser()
+      },[])
     const handleLikeClick = async()=>{
     await fetch(`http://localhost:3000/comments/${comment._id}/like`,{
       method:'PATCH'
     })
-    console.log('clicked')
     setLikeStatus(!likeStatus)
   }
   const handleDelete = async()=>{
@@ -32,6 +41,7 @@ const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
     <div>
       <div>
       <h1>{text}</h1>
+      <Link to={`profile/${user?._id}`}><p>{user?.name}</p></Link>
       <p>{comment.textContent}</p>
       <img src={comment.imageContent} className="w-48 h-27"></img>
       <p>{likeStatus?(<button onClick={handleLikeClick}>Unlike</button>):(<button onClick={handleLikeClick}>Like</button>)}</p>

@@ -36,7 +36,6 @@ const FormComment = ({postId,parentId}:{postId:string,parentId?:string|null}) =>
             body:data
         }
         )
-        console.log(comment)
     }
   return (
     <div>

@@ -54,7 +54,6 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
   }
   const handlePasswordSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
-    console.log(currentPassword)
     const res = await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {

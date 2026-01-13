@@ -25,19 +25,29 @@ const getSearchUsers = async (req,res)=>{
 const getAllFriends= async (req,res)=>{
     try {
         const email = "deepak.kumar016211@gmail.com"
-        const followers = await UserModel.find({email:email},{followers:1})
-        const following = await UserModel.find({email:email},{following:1})
-        res.status(200).json(followers,following)
+        const followers = await UserModel.findOne({email:email}).populate('followers')
+        const following = await UserModel.findOne({email:email}).populate('following')
+        res.status(200).json([...followers.followers,...following.following])
     } catch (error) {
         console.log(error)
         res.status(500).json(error)
     }
 }
 
-const getOneUser= async (req,res)=>{
+const getOneUserByEmail= async (req,res)=>{
+    try {
+        const userEmail = req.params.email
+        const user = await UserModel.findOne({email:userEmail})
+        res.status(200).json(user)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+const getOneUserById= async (req,res)=>{
     try {
         const id = req.params.id
-        const user = await UserModel.findOne({email:id})
+        const user = await UserModel.findOne({_id:id})
         res.status(200).json(user)
     } catch (error) {
         console.log(error)
@@ -121,6 +131,28 @@ const updateUser=async(req,res)=>{
     }
 }
 
+const updateFollowers = async(req,res)=>{
+   try {
+        const flag = req.params.flag
+        console.log(flag)
+        const userEmail = "deepak.kumar016211@gmail.com"
+        const toFollowId = req.body
+        const followingUserId = await UserModel.findOne({email:userEmail},{_id:1})
+       if(flag==="follow"){
+        const followingUser = await UserModel.findOneAndUpdate({email:userEmail},{$addToSet:{following:toFollowId}})
+        const followerUser = await UserModel.findOneAndUpdate({_id:toFollowId},{$addToSet:{followers:followingUserId._id}}) 
+       }else if(flag==="unfollow"){
+        const followingUser = await UserModel.findOneAndUpdate({email:userEmail},{$pull:{following:toFollowId}})
+        const followerUser = await UserModel.findOneAndUpdate({_id:toFollowId},{$pull:{followers:followingUserId._id}}) 
+       }
+        res.status(200).json("success")
+   } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+   }
+
+}
+
 const updateSavedStatus = async(req,res)=>{
     try {
         const postId = req.params.id
@@ -151,4 +183,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUser,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers}
+export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}
