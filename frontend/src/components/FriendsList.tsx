@@ -30,7 +30,6 @@ const FriendsList = () => {
         <h1>Friend list</h1>
         {friends?.map((friend:iUser)=>(
          <div key={friend._id}>
-           <h1>first</h1>
           <UserSprite friend={friend} user={user}/>
          </div>
         ))}

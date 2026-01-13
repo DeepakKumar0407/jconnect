@@ -17,7 +17,7 @@ const getAllPosts= async (req,res)=>{
 const getAllPostsByUser=async(req,res)=>{
     try {
         const id = req.params.id
-        const post = await PostModel.find({email:id})
+        const post = await PostModel.find({userId:id})
         res.status(200).json(post)
     } catch (error) {
         console.log(error)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import type { iNotification } from "./interfaces"
+import type { iNotification, iUser } from "./interfaces"
 
-const NotificationStructure = () => {
+const NotificationStructure = ({user}:{user:iUser|undefined}) => {
  
   const [notifications,setNotifications] = useState<iNotification[]>()
   useEffect(()=>{
@@ -14,6 +14,7 @@ const NotificationStructure = () => {
   },[])
   return (
         notifications?.map((notification:iNotification)=>(
+          user?._id!==notification.userId&&
           <div key={notification._id}>
             <p>{notification.userId}</p>
           </div>

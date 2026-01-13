@@ -1,7 +1,6 @@
 import type { iUser } from "./interfaces"
 
 const UserSprite = ({friend,user}:{friend:iUser,user:iUser|undefined}) => {
-  const currentUserEmail = "deepak.kumar016211@gmail.com"//jwt
   const handleFollow= async()=>{
     const following = await fetch('http://localhost:3000/users/follow/follow',{
       method:"PATCH",
@@ -9,7 +8,10 @@ const UserSprite = ({friend,user}:{friend:iUser,user:iUser|undefined}) => {
         "Content-Type":"text/plain"
       },
       body:friend?._id
-    }) 
+    })
+     if(!following.ok){
+      console.log('something went wrong')
+    }  
   }
   const handleUnFollow= async()=>{
     const following = await fetch('http://localhost:3000/users/unfollow/follow',{
@@ -18,7 +20,10 @@ const UserSprite = ({friend,user}:{friend:iUser,user:iUser|undefined}) => {
         "Content-Type":"text/plain"
       },
       body:friend?._id
-    }) 
+    })
+     if(!following.ok){
+      console.log('something went wrong')
+    }  
   }
   return (
     <div>

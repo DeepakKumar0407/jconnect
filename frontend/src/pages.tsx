@@ -12,7 +12,7 @@ import SearchResults from "./pages/SearchResults";
 import Setting from "./pages/Setting";
 import Notifications from "./pages/Notifications";
 import Post from "./pages/Post";
-import Layout from "./layout";
+import Layout from "./Layout";
 import './App.css'
 
 
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       { path: "/chat_room", element: <ChatRoom /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Registration /> },
-      { path: "/post_details", element: <PostDetail /> },
+      { path: "/post_details/:id", element: <PostDetail /> },
       { path: "/profile/:id", element: <Profile /> },
       { path: "/saved", element: <SavedPosts /> },
       { path: "/search/:blob", element: <SearchResults /> },

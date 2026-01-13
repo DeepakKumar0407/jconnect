@@ -114,6 +114,7 @@ const updateUser=async(req,res)=>{
     try {
         const id = req.params.id
         const data = req.body
+        console.log(typeof(data))
         if(typeof(data)==='string'){
         const user = await UserModel.findOne({email:id},{password:1})
         const isPassword = await bcrypt.compare(data,user.password)

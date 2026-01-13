@@ -17,7 +17,7 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
   const [validatePassword,setValidatePassword] = useState(false)
   useEffect(()=>{
     const getUser = async ()=>{
-        const res = await fetch(`http://localhost:3000/users/${userEmail}`) 
+        const res = await fetch(`http://localhost:3000/users/${userEmail}/email`) 
         const user = await res.json()
         setUserData(state=>({
             ...state,
@@ -37,10 +37,6 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
   const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
       try {
-        const isValidPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/.test(userData.password)
-      if(!isValidPassword){
-        throw new Error('invalid Password')
-      }
       await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {
@@ -54,6 +50,10 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
   }
   const handlePasswordSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
+    const isValidPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/.test(userData.password)
+    if(!isValidPassword){
+      throw new Error('invalid Password')
+    }
     const res = await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {
@@ -68,8 +68,9 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
     }
   }
   return (
-    <div className="w-full">
-    {field==='password'?(
+   field===""?(''):(
+     <div className="w-full">
+    {field==='password'&&
         <div>
             <h1>Update {field}</h1>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handlePasswordSubmit}>
@@ -84,17 +85,25 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
             }
             
         </div>
-        ):(
+}{field==='name'&&
         <div>
             <h1>Update {field}</h1>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            {field==='name'?(<div><label htmlFor="name">name</label><input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" required></input></div>):
-            field==='dob'?(<div><label htmlFor="dob">dob</label><input type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" required></input></div>):("")}
+            <div><label htmlFor="name">name</label><input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" required></input></div>
             <button>Submit</button>
             </form>
         </div>
-    )}
+}{field==='dob'&&
+        <div>
+            <h1>Update {field}</h1>
+            <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
+            <div><label htmlFor="dob">dob</label><input type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" required></input></div>
+            <button>Submit</button>
+            </form>
+        </div>
+}
     </div>
+   )
   )
 }
 export default FormUpdateUser

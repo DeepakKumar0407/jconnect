@@ -43,7 +43,7 @@ const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
       <h1>{text}</h1>
       <Link to={`profile/${user?._id}`}><p>{user?.name}</p></Link>
       <p>{comment.textContent}</p>
-      <img src={comment.imageContent} className="w-48 h-27"></img>
+      {comment.imageContent&&<img src={comment.imageContent} className="w-48 h-27"></img>}
       <p>{likeStatus?(<button onClick={handleLikeClick}>Unlike</button>):(<button onClick={handleLikeClick}>Like</button>)}</p>
       <p><button onClick={handleDelete}>Delete</button></p>
       <FormComment postId={comment.postId} parentId={comment._id}/>
