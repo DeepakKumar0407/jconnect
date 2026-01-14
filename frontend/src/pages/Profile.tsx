@@ -26,7 +26,6 @@ const Profile = () => {
     }
     getUser()
   },[currentUserEmail])
-  console.log(user?._id)
   return (
     <div className="div md:text-base lg:text-xl">
       {user&&userCurrent&&<UserProfile user={user} userCurrent={userCurrent}/>}

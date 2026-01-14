@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import FormComment from "./FormComment"
 import type { CommentNode, iUser } from "./interfaces"
-import { Link } from "react-router-dom"
-const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
+const CommentStructure = ({comment}:{comment:CommentNode}) => {
     const [likeStatus,setLikeStatus] = useState(false)
     const [user,setUser] = useState<iUser>()
     useEffect(()=>{
@@ -25,7 +24,7 @@ const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
           setUser(data)
         }
         getUser()
-      },[])
+      },[comment.userId])
     const handleLikeClick = async()=>{
     await fetch(`http://localhost:3000/comments/${comment._id}/like`,{
       method:'PATCH'
@@ -39,22 +38,31 @@ const CommentStructure = ({comment,text}:{comment:CommentNode,text:string}) => {
   }  
   return (
     <div>
-      <div>
-      <h1>{text}</h1>
-      <Link to={`profile/${user?._id}`}><p>{user?.name}</p></Link>
-      <p>{comment.textContent}</p>
-      {comment.imageContent&&<img src={comment.imageContent} className="w-48 h-27"></img>}
-      <p>{likeStatus?(<button onClick={handleLikeClick}>Unlike</button>):(<button onClick={handleLikeClick}>Like</button>)}</p>
-      <p><button onClick={handleDelete}>Delete</button></p>
-      <FormComment postId={comment.postId} parentId={comment._id}/>
+      <div className="flex flex-col justify-baseline gap-1">
+      <div className="flex justify-baseline gap-5 items-center">
+        {user?.profilePic?(<img src={user.profilePic} className="w-5 h-5 rounded-4xl"></img>):
+        (<p className="bg-white text-black w-5 h-5 flex rounded-4xl justify-center items-center md:text-base">{user?.userName[0].toUpperCase()}</p>)}
+        <p className="w-1/2 md:text-base">@{user?.userName}</p>
       </div>
-      {comment.children.length>0&&
-      comment.children.map((reply:CommentNode)=>(
-        <div className="ml-3" key={reply._id}>
-           <CommentStructure comment={reply} text="reply"/>  
+      <div>
+        <p>{comment.textContent}</p>
+        {comment.imageContent&&<img src={comment.imageContent} className="w-48 h-27"></img>}
+      </div>
+      <div className="flex justify-baseline gap-5">
+        <p>{likeStatus?(<button onClick={handleLikeClick}>Unlike</button>):(<button onClick={handleLikeClick}>Like</button>)}</p>
+        <p><button onClick={handleDelete}>Delete</button></p>
+      </div>
+      <FormComment postId={comment.postId} parentId={comment._id} type="reply"/>
+      </div>
+      <div>
+        {comment.children.length>0&&
+        comment.children.map((reply:CommentNode)=>(
+        <div className="ml-3 mt-5 border-l pl-2 border-white/50" key={reply._id}>
+           <CommentStructure comment={reply}/>  
         </div>
       ))
       }
+      </div>
     </div>
   )
 }

@@ -3,7 +3,6 @@ import type { iCommentRecived, iUser } from "./interfaces"
 
 const CommentByUser = ({user}:{user:iUser|undefined}) => {
   const [comments,setComments] = useState<iCommentRecived[]>()
-  console.log(user?._id)
   useEffect(()=>{
     const getComments = async()=>{
       const res = await fetch(`http://localhost:3000/comments/${user?._id}/user`)

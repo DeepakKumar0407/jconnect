@@ -9,6 +9,7 @@ export interface iNotification {
 export interface iUser {
   _id?:string;
   name:string;
+  profilePic:string;
   userName:string;
   email:string;
   phone:string;
@@ -30,6 +31,9 @@ export interface iPostRecived {
   textContent:string;
   imageContent?:string;
   videoContent?:string;
+  likesCount?:string;
+  commentCount?:string;
+  porfilePic?:string;
 }
 
 export interface iLogin {

@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 body{
-    @apply text-xs text-white bg-black
+    @apply text-white bg-black
 }
 h1{
-    @apply text-base md:text-xl lg:text-2xl
+    @apply text-base sm:text-xl md:text-2xl lg:text-4xl
 }
 .div{
 @apply w-fit md:w-2/3

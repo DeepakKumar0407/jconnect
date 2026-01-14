@@ -3,7 +3,7 @@ import {useEffect, useMemo, useState } from "react"
 import CommentStructure from "./CommentStructure"
 import type { CommentNode, iCommentRecived } from "./interfaces"
 
-const Comment = ({postId}:{postId:string}) => {
+const Comment = ({postId}:{postId:string|undefined}) => {
   const [comments,setComments] = useState<iCommentRecived[]>()
   useEffect(()=>{
     const getComments = async()=>{
@@ -11,7 +11,9 @@ const Comment = ({postId}:{postId:string}) => {
       const data = await res.json()
       setComments(data)
     }
-    getComments()
+    if(postId){
+      getComments()
+    }
   },[postId])
 
   function buildCommentTree(comments: iCommentRecived[]):CommentNode[] {
@@ -43,8 +45,8 @@ const commentTree = useMemo(() => {
   return (
     <div className="flex flex-col gap-10">
     {commentTree?.map((child:CommentNode)=>(
-      <div key={child._id}>
-        <CommentStructure comment={child} text="comment"/>
+      <div key={child._id} className="border-2 border-white/50 bg-white/5 rounded p-4">
+        <CommentStructure comment={child}/>
       </div>
     ))}
     </div>

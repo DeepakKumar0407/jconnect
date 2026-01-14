@@ -91,7 +91,6 @@ const getSavedPosts = async(req,res)=>{
         const id = req.params.id
         const user = await UserModel.findById(id).populate('savedPosts')
         const savedPosts = user.savedPosts
-        console.log(savedPosts)
         res.status(200).json(savedPosts)
     } catch (error) {
         console.log(error)
@@ -114,7 +113,6 @@ const updateUser=async(req,res)=>{
     try {
         const id = req.params.id
         const data = req.body
-        console.log(typeof(data))
         if(typeof(data)==='string'){
         const user = await UserModel.findOne({email:id},{password:1})
         const isPassword = await bcrypt.compare(data,user.password)
@@ -135,7 +133,6 @@ const updateUser=async(req,res)=>{
 const updateFollowers = async(req,res)=>{
    try {
         const flag = req.params.flag
-        console.log(flag)
         const userEmail = "deepak.kumar016211@gmail.com"
         const toFollowId = req.body
         const followingUserId = await UserModel.findOne({email:userEmail},{_id:1})
@@ -159,7 +156,6 @@ const updateSavedStatus = async(req,res)=>{
         const postId = req.params.id
         const email = "deepak.kumar016211@gmail.com"
         const isSaved = await UserModel.exists({email:email,savedPosts:postId})
-        console.log(isSaved)
         if(isSaved===null){
         await UserModel.findOneAndUpdate({email:email},{$addToSet:{savedPosts:postId}})
         }else{

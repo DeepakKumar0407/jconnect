@@ -4,6 +4,10 @@ import type { iPost } from "./interfaces"
 
 
 const FormPost = () => {
+  const [contentType,setContentType] = useState<boolean>(true)
+  const handleClick = ()=>{
+    setContentType(!contentType)
+  }
   const initialData:iPost={
     textContent:"",
     imageContent:null,
@@ -33,8 +37,9 @@ const FormPost = () => {
     <div>
       <form className="w-full" onSubmit={handleSubmit}>
       <textarea value={postData.textContent} name="textContent"  onChange={handleChange} required>Make a post</textarea>
-      <label htmlFor="image">I</label><input type="file" name="imageContent" onChange={(e)=>setPostData(state=>({...state,imageContent:e.target.files?.[0]||null}))}></input>
-      <label htmlFor="video">V</label><input type="file" name="videoContent" onChange={(e)=>setPostData(state=>({...state,videoContent:e.target.files?.[0]||null}))}></input>
+      <button onClick={handleClick} type="button">{contentType?("Video"):("Image")}</button>
+      {contentType?(<label htmlFor="image">I<input type="file" name="imageContent" onChange={(e)=>setPostData(state=>({...state,imageContent:e.target.files?.[0]||null}))}></input></label>):
+      (<label htmlFor="video">V<input type="file" name="videoContent" onChange={(e)=>setPostData(state=>({...state,videoContent:e.target.files?.[0]||null}))}></input></label>)}
       <button>submit</button>
       </form>
     </div>

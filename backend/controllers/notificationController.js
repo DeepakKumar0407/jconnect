@@ -6,7 +6,6 @@ const getNotification = async(req,res)=>{
         const userEmail = "deepak.kumar016211@gmail.com"
         const userId = await UserModel.findOne({email:userEmail},{_id:1})
         const notification = await NotificationModel.find({notifForid:userId._id}).sort({createdAt:1})
-        console.log(notification)
         res.status(200).json(notification)
     } catch (error) {
         console.log(error)

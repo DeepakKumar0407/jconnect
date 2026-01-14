@@ -13,15 +13,15 @@ const Home = () => {
    getPosts()
   },[])
   return (
-    <div className="div pb-15">
-      <h1>Home</h1>
-      
+    <div className=" div mt-5 pb-15">
+    <h1>For You</h1>
+    <div className="flex flex-col justify-baseline gap-20 mt-10 w-9/10 mx-auto">
       {posts?.map((post)=>(
         <div key={post._id}>
           <PostStructure post={post}/>
         </div>
       ))}
-    
+    </div>
     </div>
   )
 }
