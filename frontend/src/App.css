@@ -1,15 +1,23 @@
 @import "tailwindcss";
 
+html{
+  @apply text-xs
+}
+
 body{
-    @apply text-white bg-black
+    @apply text-white bg-black w-full
 }
 h1{
     @apply text-base sm:text-xl md:text-2xl lg:text-4xl
 }
 .div{
-@apply w-fit md:w-2/4 p-3 ml-40 md:ml-45 md:mr-65 lg:ml-65
-    
+@apply w-fit md:w-2/4 mt-5 pb-22 p-3 ml-40 md:ml-60 md:mr-40 lg:ml-75
 }
+.icon {
+  @apply w-5 h-5 lg:w-7 lg:h-7 inline
+}
+    
+
 ::-webkit-scrollbar {
   width: 5px;
 }

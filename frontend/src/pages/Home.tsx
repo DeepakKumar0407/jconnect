@@ -18,9 +18,9 @@ const Home = () => {
 
   if (error) return 'An error has occurred: ' + error.message
   return (
-    <div className={`div mt-5 pb-15`} style={{height:`${yaxis}px`}}>
+    <div className={`div`} style={{height:`${yaxis}px`}}>
     <h1>For You</h1>
-    <div className="flex flex-col justify-baseline gap-20 mt-10 w-full">
+    <div className="flex flex-col justify-baseline gap-20 mt-10 w-full pb-22">
       {data?.map((post:iPostRecived)=>(
         <div key={post._id}>
           <PostStructure post={post}/>

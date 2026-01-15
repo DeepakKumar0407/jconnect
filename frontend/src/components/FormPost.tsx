@@ -38,8 +38,8 @@ const FormPost = () => {
       <form className="w-full" onSubmit={handleSubmit}>
       <textarea value={postData.textContent} name="textContent"  onChange={handleChange} required>Make a post</textarea>
       <button onClick={handleClick} type="button">{contentType?("Video"):("Image")}</button>
-      {contentType?(<label htmlFor="image">I<input type="file" name="imageContent" onChange={(e)=>setPostData(state=>({...state,imageContent:e.target.files?.[0]||null}))}></input></label>):
-      (<label htmlFor="video">V<input type="file" name="videoContent" onChange={(e)=>setPostData(state=>({...state,videoContent:e.target.files?.[0]||null}))}></input></label>)}
+      {contentType?(<label htmlFor="image">I<input type="file" name="imageContent" accept="image/*" onChange={(e)=>setPostData(state=>({...state,imageContent:e.target.files?.[0]||null}))}></input></label>):
+      (<label htmlFor="video">V<input type="file" name="videoContent" accept="video/*" onChange={(e)=>setPostData(state=>({...state,videoContent:e.target.files?.[0]||null}))}></input></label>)}
       <button>submit</button>
       </form>
     </div>

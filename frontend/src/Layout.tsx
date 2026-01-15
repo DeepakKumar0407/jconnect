@@ -8,7 +8,6 @@ import { useState } from "react";
 export default function Layout() {
   const [scrennWidth,setScreenWidth] = useState<number>(1500)
   window.addEventListener('resize',()=>setScreenWidth(window.innerWidth))
-  console.log(scrennWidth)
   if(scrennWidth>768){
     return (
     <>

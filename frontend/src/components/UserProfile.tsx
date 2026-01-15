@@ -34,8 +34,12 @@ const UserProfile = ({user,userCurrent}:{user:iUser|undefined,userCurrent:iUser|
       <p>Posts</p>
       <p>Comments made</p>
       <p>Likes made</p>
-      {userCurrent?.email!==user?.email&&<div>
-      {userCurrent?.following?.map((follow=>(follow===user?._id?(<button onClick={handleUnFollow} key={follow}>Unfollow</button>):(<button onClick={handleFollow} key={follow}>Follow</button>))))}{userCurrent?.following?.length?(""):(<button onClick={handleFollow}>Follow</button>)}</div>}
+      {userCurrent?.email!==user?.email&&
+      <div className="">
+      {user?._id&& userCurrent?.following?.includes(user._id)?(<button onClick={handleUnFollow}>Unfollow</button>)
+      :(<button onClick={handleFollow}>Follow</button>)}
+      </div>
+    }
     </div>
   )
 }
