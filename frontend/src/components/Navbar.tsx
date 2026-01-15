@@ -14,19 +14,27 @@ const Navbar = () => {
     getUser()
   },[])
   return (
-    <div className="w-fit p-5 flex flex-col justify-baseline gap-3 md:text-base lg:text">
-        <Link to="/">Home</Link>
-        <Link to="about">About</Link>
+    <div className="max-w-fit min-w-1/6 p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text border-r-2 border-white/20 top-0 left-0 fixed h-full">
+      <div className="flex justify-baseline gap-5 items-center">
+        {user?.profilePic?(<img src={user.profilePic} className="w-10 h-10 rounded-4xl"></img>):
+        (<p className="bg-white text-black w-10 h-10 flex rounded-4xl justify-center items-center md:text-xl">{user?.userName[0].toUpperCase()}</p>)}
+        <p className="w-1/2 md:text-xl">{user?.name}</p>
+      </div>
+      <p className="md:text-xl w-full">@{user?.userName}</p>
+      <hr></hr>
+       <div className="flex flex-col justify-baseline gap-5">
+         <Link to="/">Home</Link>
+        <Link to="Post">Post</Link>
         <Link to="chat_room">Chat Room</Link>
-        <Link to="login">Login</Link>
-        <Link to="register">Register</Link>
-        <Link to="post_details">PostDetails</Link>
         <Link to={`profile/${user?._id}`}>Profile</Link>
         <Link to="saved">Saved Posts</Link>
-        <Link to="search/deepak">Search Result</Link>
-        <Link to="settings">Settings</Link>
+        <Link to="login">Login</Link>
+        <Link to="register">Register</Link>
+        <hr></hr>
         <Link to="notifications">Notifications</Link>
-        <Link to="Post">Post</Link>
+        <Link to="settings">Settings</Link>
+        <Link to="about">About</Link>
+       </div>
     </div>
   )
 }

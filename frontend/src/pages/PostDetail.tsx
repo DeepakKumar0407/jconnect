@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import type { iPostRecived } from "../components/interfaces"
 import FormComment from "../components/FormComment"
 import Comment from "../components/Comment"
@@ -55,10 +55,12 @@ const PostDetail = () => {
   return (
     <div className="div flex flex-col justify-baseline mb-15">
       <button onClick={handleBack} className="w-1/3 text-left mt-2 mb-2 p-2 md:text-xl">&larr; Back</button>
-      <div className="flex justify-baseline gap-5 items-center">
-        {post?.porfilePic?(<img src={post.porfilePic} className="w-10 h-10 rounded-4xl"></img>):
+      <div >
+        <Link to={`/profile/${post?.userId}`} className="flex justify-baseline gap-5 items-center">
+        {post?.profilePic?(<img src={post.profilePic} className="w-10 h-10 rounded-4xl"></img>):
         (<p className="bg-white text-black w-10 h-10 flex rounded-4xl justify-center items-center md:text-xl">{post?.userName[0].toUpperCase()}</p>)}
         <p className="w-1/2 md:text-xl">@{post?.userName}</p>
+        </Link>
       </div>
       <p className="mt-2 md:text-base mb-2">{post?.textContent}</p>
       {post?.imageContent!=="null"&&<img src={post?.imageContent}></img>}

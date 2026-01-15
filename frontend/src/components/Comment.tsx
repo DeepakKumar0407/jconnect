@@ -1,21 +1,20 @@
 
-import {useEffect, useMemo, useState } from "react"
+import {useMemo } from "react"
 import CommentStructure from "./CommentStructure"
 import type { CommentNode, iCommentRecived } from "./interfaces"
+import { useQuery } from "@tanstack/react-query"
 
 const Comment = ({postId}:{postId:string|undefined}) => {
-  const [comments,setComments] = useState<iCommentRecived[]>()
-  useEffect(()=>{
-    const getComments = async()=>{
-      const res = await fetch(`http://localhost:3000/comments/${postId}/post`)
-      const data = await res.json()
-      setComments(data)
-    }
-    if(postId){
-      getComments()
-    }
-  },[postId])
-
+  const { isPending,data,error } = useQuery({
+  queryKey: ['comments',postId],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/comments/${postId}/post`,
+    )
+    return await response.json()
+  },
+  })
+  
   function buildCommentTree(comments: iCommentRecived[]):CommentNode[] {
   const map: Record<string, CommentNode> = {};
   const roots: CommentNode[] = [];
@@ -39,9 +38,12 @@ const Comment = ({postId}:{postId:string|undefined}) => {
   return roots;
 }
 const commentTree = useMemo(() => {
-  if (!comments?.length) return [];
-  return buildCommentTree(comments);
-}, [comments]);
+  if (!data?.length) return [];
+  return buildCommentTree(data);
+}, [data]);
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
   return (
     <div className="flex flex-col gap-10">
     {commentTree?.map((child:CommentNode)=>(

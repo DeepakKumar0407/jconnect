@@ -1,5 +1,5 @@
 
-import {createBrowserRouter,} from "react-router-dom";
+import {createBrowserRouter, ScrollRestoration,} from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import ChatRoom from "./pages/ChatRoom";
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/", element: <Home />},
       { path: "/about", element: <About /> },
       { path: "/chat_room", element: <ChatRoom /> },
       { path: "/login", element: <Login /> },
@@ -35,5 +35,5 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
+<ScrollRestoration/>
 export default router

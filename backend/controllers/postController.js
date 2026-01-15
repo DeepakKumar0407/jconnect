@@ -62,7 +62,7 @@ const getLike = async(req,res)=>{
 
 const createPost=async(req,res)=>{
    try {
-        const email = "deepak.kumar016211@gmail.com"
+        const email = "8860559380bull1@gmail.com"
         const data = req.body
         const {imageContent,videoContent} = req.files
         let imageUrl = null

@@ -3,9 +3,14 @@ import Navbar from "./components/Navbar";
 import FriendsList from "./components/FriendsList";
 import Footer from "./components/Footer";
 import './App.css'
+import { useState } from "react";
 
 export default function Layout() {
-  return (
+  const [scrennWidth,setScreenWidth] = useState<number>(1500)
+  window.addEventListener('resize',()=>setScreenWidth(window.innerWidth))
+  console.log(scrennWidth)
+  if(scrennWidth>768){
+    return (
     <>
       <Navbar />
         <Outlet />
@@ -14,4 +19,14 @@ export default function Layout() {
       <ScrollRestoration/>
     </>
   );
+}else{
+  return (
+    <>
+      <Navbar />
+        <Outlet />
+      <Footer />
+      <ScrollRestoration/>
+    </>
+  );
+}
 }

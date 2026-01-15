@@ -7,6 +7,19 @@ h1{
     @apply text-base sm:text-xl md:text-2xl lg:text-4xl
 }
 .div{
-@apply w-fit md:w-2/3
+@apply w-fit md:w-2/4 p-3 ml-40 md:ml-45 md:mr-65 lg:ml-65
     
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
 }

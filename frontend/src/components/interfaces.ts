@@ -27,13 +27,14 @@ export interface iPost {
 
 export interface iPostRecived {
   _id:string;
+  userId:string;
   userName:string;
   textContent:string;
   imageContent?:string;
   videoContent?:string;
   likesCount?:string;
   commentCount?:string;
-  porfilePic?:string;
+  profilePic?:string;
 }
 
 export interface iLogin {

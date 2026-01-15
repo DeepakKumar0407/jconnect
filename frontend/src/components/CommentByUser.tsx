@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react"
 import type { iCommentRecived, iUser } from "./interfaces"
+import { useQuery } from "@tanstack/react-query"
 
 const CommentByUser = ({user}:{user:iUser|undefined}) => {
-  const [comments,setComments] = useState<iCommentRecived[]>()
-  useEffect(()=>{
-    const getComments = async()=>{
-      const res = await fetch(`http://localhost:3000/comments/${user?._id}/user`)
-      const data = await res.json()
-      setComments(data)
-    }
-    getComments()
-  },[user?._id])
+  const { isPending,data,error } = useQuery({
+  queryKey: ['comments',user?._id],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/comments/${user?._id}/user`,
+    )
+    return await response.json()
+  },
+  })
+  if (isPending) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
   return (
     <div>
-      {comments?.map((comment:iCommentRecived)=>(
+      {data?.map((comment:iCommentRecived)=>(
         <div key={comment._id}>
           <p>{comment.textContent}</p>
         </div>
