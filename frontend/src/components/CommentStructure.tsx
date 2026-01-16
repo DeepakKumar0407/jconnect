@@ -21,7 +21,7 @@ const CommentStructure = ({ comment }: { comment: CommentNode }) => {
     setInitialLike()
   }, [likes])
   const { data: user} = useQuery({
-    queryKey: ["user", comment],
+    queryKey: ["comment", comment],
     queryFn: async () => {
       const response = await fetch(
         `http://localhost:3000/users/${comment.userId}/id`
@@ -34,16 +34,20 @@ const CommentStructure = ({ comment }: { comment: CommentNode }) => {
       method: "PATCH",
     })
   }
-  const {mutate} = useMutation({mutationFn:updateLike})
-  const handleLikeClick = async () => {
-    mutate()
-    setLikeStatus(!likeStatus)
-  }
-
-  const handleDelete = async () => {
+  const deleteLike = async ()=>{
     await fetch(`http://localhost:3000/comments/${comment._id}`, {
       method: "DELETE",
     })
+  }
+  const {mutate:mutateLikeUpdate} = useMutation({mutationFn:updateLike})
+  const handleLikeClick = async () => {
+    mutateLikeUpdate()
+    setLikeStatus(!likeStatus)
+  }
+
+  const {mutate:mutateLikeDelete} = useMutation({mutationFn:deleteLike})
+  const handleDelete = async () => {
+    mutateLikeDelete()
   }
 
   return (

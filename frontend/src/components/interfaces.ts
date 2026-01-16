@@ -9,7 +9,7 @@ export interface iNotification {
 export interface iUser {
   _id?:string;
   name:string;
-  profilePic:string;
+  profilePic?:string;
   userName:string;
   email:string;
   phone:string;
@@ -43,6 +43,7 @@ export interface iLogin {
 }
 
 export interface iComment {
+        _id?:string;
         textContent:string;
         imageContent?:File|null;
         parentId?:string;

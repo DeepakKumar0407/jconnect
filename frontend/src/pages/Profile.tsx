@@ -1,31 +1,30 @@
-import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import type { iUser } from "../components/interfaces"
 import CommentByUser from "../components/CommentByUser"
 import PostByUser from "../components/PostByUser"
 import UserProfile from "../components/UserProfile"
+import { useQuery } from "@tanstack/react-query"
 
 const Profile = () => {
   const currentUserEmail = "deepak.kumar016211@gmail.com"//jwt
   const {id} = useParams()
-  const [user,setUser] = useState<iUser>()
-  const [userCurrent,setUserCurrent] = useState<iUser>()
-  useEffect(()=>{
-    const getUser=async()=>{
-      const res = await fetch(`http://localhost:3000/users/${id}/id`)
-      const data = await res.json()
-      setUser(data)
-    }
-    getUser()
-  },[id])
-  useEffect(()=>{
-    const getUser=async()=>{
-      const res = await fetch(`http://localhost:3000/users/${currentUserEmail}/email`)
-      const data = await res.json()
-      setUserCurrent(data)
-    }
-    getUser()
-  },[currentUserEmail])
+   const { data:user } = useQuery({
+  queryKey: ['user',id],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/users/${id}/id`,
+    )
+    return await response.json()
+  },
+  })
+   const { data:userCurrent } = useQuery({
+  queryKey: ['userCurrent',currentUserEmail],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/users/${currentUserEmail}/email`,
+    )
+    return await response.json()
+  },
+  })
   return (
     <div className="div md:text-base lg:text-xl">
       {user&&userCurrent&&<UserProfile user={user} userCurrent={userCurrent}/>}

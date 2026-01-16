@@ -12,7 +12,7 @@ router.get('/:id/user',getAllCommentsByUser)
 router.get('/:id/comment',getSingleComment)
 router.get('/:id/like',getLike)
 router.post('/',upload.single('imageContent'),createComment)
-router.patch('/:id',updateComment)
+router.patch('/:id',upload.single('imageContent'),updateComment)
 router.patch('/:id/like',updateLike)
 router.delete('/:id',deleteComment)
 

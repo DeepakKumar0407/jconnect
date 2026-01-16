@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import type { iPostRecived } from "../components/interfaces"
 import FormComment from "../components/FormComment"
 import Comment from "../components/Comment"
 import { useNavigate } from "react-router-dom"
@@ -8,19 +7,35 @@ import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid"
 import { HeartIcon } from "@heroicons/react/24/solid"
 import { BookmarkSquareIcon } from "@heroicons/react/24/solid"
 import { TrashIcon } from "@heroicons/react/24/outline"
+import { useQuery } from "@tanstack/react-query"
 
 const PostDetail = () => {
   const {id}= useParams()
   const [likeStatus,setLikeStatus] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [yaxis,setYAxis] = useState(window.innerHeight)
-  const [post,setPost] = useState<iPostRecived>()
   const navigate = useNavigate()
+  const { data:post } = useQuery({
+  queryKey: ['post',id],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/posts/${id}`,
+    )
+    return await response.json()
+  },
+  })
+  const { data } = useQuery({
+  queryKey: ['likeStatus',post],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/posts/${post?._id}/like`,
+    )
+    return await response.json()
+  },
+  })
   useEffect(()=>{
     const getLikeStatus = async()=>{
-      const res = await fetch(`http://localhost:3000/posts/${post?._id}/like`)
-      const status = await res.json()
-      if(status===null){
+      if(data===null){
         setLikeStatus(false)
       }else{
         setLikeStatus(true)
@@ -30,15 +45,8 @@ const PostDetail = () => {
     if(post){
        getLikeStatus()
     }
-  },[post])
-  useEffect(()=>{
-    const getPost = async()=>{
-      const res = await fetch(`http://localhost:3000/posts/${id}`)
-      const data = await res.json()
-      setPost(data)
-    }
-    getPost()
-  },[id])
+  },[data,post])
+ 
      const handleLikeClick = async()=>{
     await fetch(`http://localhost:3000/posts/${post?._id}/like`,{
       method:'PATCH'

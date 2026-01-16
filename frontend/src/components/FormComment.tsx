@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import type { iComment } from "./interfaces";
+import { useMutation } from "@tanstack/react-query";
 
 const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:string|null,type:string}) => {
    
@@ -27,17 +28,20 @@ const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:s
         }
         console.log(type)
     }
+    const submitData = async(data:BodyInit)=>{
+        await fetch('http://localhost:3000/comments',{
+            method:"POST",
+            body:data
+        })
+    }
+    const {mutate} = useMutation({mutationFn:submitData})
     const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
         const data = new FormData()
         Object.entries(comment).forEach(([key,value])=>{
             data.append(key,value)
         })
-        await fetch('http://localhost:3000/comments',{
-            method:"POST",
-            body:data
-        }
-        )
+        mutate(data)
     }
   return (
     <div>

@@ -104,11 +104,23 @@ const createComment =async(req,res)=>{
 
 
 const updateComment = async(req,res)=>{
-    try {
-        const id = req.params.id
-        const data = req.body
-        const comment = await CommentModel.updateOne({_id:id},data)
-        res.status(200).json(comment)
+  try {
+        const commentId = req.params.id
+        const data = {...req.body}
+        let imageUrl = null
+        if(req.file){
+            imageUrl = await new Promise((resolve,reject)=>{
+                const stream = cloudinary.uploader.upload_stream(({folder:"comment_Images",resource_type:"image"}),(error,result)=>{
+                    if(error) reject(error)
+                    if(!result.secure_url) return reject(new Error("No URL"))
+                    resolve(result.secure_url)
+                })
+                streamifier.createReadStream(req.file.buffer).pipe(stream);
+            })
+        }
+        data.imageContent = imageUrl
+        const comment = await CommentModel.findOneAndUpdate({_id:commentId},data)
+        res.status(200).json('success')
     } catch (error) {
         console.log(error)
         res.status(500).json(error)

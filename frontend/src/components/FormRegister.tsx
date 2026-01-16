@@ -1,6 +1,7 @@
 
 import { useState } from "react"
 import type { iUser } from "./interfaces"
+import { useMutation } from "@tanstack/react-query"
 
 
 const FormRegister = () => {
@@ -20,6 +21,16 @@ const FormRegister = () => {
       [name]:value
     }))
   }
+    const submitUser = async(userData:iUser)=>{
+          await fetch('http://localhost:3000/users',{
+        method:'POST',
+        headers: {
+        'Content-Type': 'application/json'
+  },
+    body:JSON.stringify(userData)
+    })
+      }
+  const {mutate} = useMutation({mutationFn:submitUser})
   const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
     try {
@@ -27,13 +38,7 @@ const FormRegister = () => {
       if(!isValidPassword){
         throw new Error('invalid Password')
       }
-      await fetch('http://localhost:3000/users',{
-      method:'POST',
-      headers: {
-    'Content-Type': 'application/json'
-  },
-    body:JSON.stringify(userData)
-    })
+      mutate(userData)
     } catch (error) {
       console.log(error)
     }

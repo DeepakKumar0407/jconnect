@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import type { iUser } from "./interfaces"
 import { HomeIcon } from "@heroicons/react/24/solid"
@@ -9,18 +8,19 @@ import { BookmarkSquareIcon } from "@heroicons/react/24/solid"
 import { BellAlertIcon } from "@heroicons/react/24/solid"
 import { Cog8ToothIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/solid"
+import { useQuery } from "@tanstack/react-query"
 
 const Navbar = () => {
   const email = "deepak.kumar016211@gmail.com" //jwt
-  const [user,setUser] = useState<iUser>()
-  useEffect(()=>{
-    const getUser = async()=>{
-      const res = await fetch(`http://localhost:3000/users/${email}/email`)
-      const data = await res.json()
-      setUser(data)
-    }
-    getUser()
-  },[])
+  const { data:user } = useQuery<iUser>({
+  queryKey: ['user',email],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/users/${email}/email`,
+    )
+    return await response.json()
+  },
+  })
   return (
     <div className="w-fit p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text border-r-2 border-white/20 top-0 left-0 sticky">
       <div className="flex justify-between gap-2 items-center">

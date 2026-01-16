@@ -1,27 +1,36 @@
+import { useMutation } from "@tanstack/react-query"
 import type { iUser } from "./interfaces"
 
 const UserSprite = ({friend,user}:{friend:iUser,user:iUser|undefined}) => {
-  const handleFollow= async()=>{
-    const following = await fetch('http://localhost:3000/users/follow/follow',{
+const submitFollow = async(id:string|undefined)=>{
+          await fetch('http://localhost:3000/users/follow/follow',{
       method:"PATCH",
       headers:{
         "Content-Type":"text/plain"
       },
-      body:friend?._id
+      body:id
     })
-     if(!following.ok){
+      }
+  const {mutate:mutateFollow,error:followError} = useMutation({mutationFn:submitFollow})
+    const handleFollow = async()=>{
+    mutateFollow(user?._id)
+    if(followError){
       console.log('something went wrong')
-    }  
+    } 
   }
-  const handleUnFollow= async()=>{
-    const following = await fetch('http://localhost:3000/users/unfollow/follow',{
+  const submitUnFollow = async(id:string|undefined)=>{
+          await fetch('http://localhost:3000/users/unfollow/follow',{
       method:"PATCH",
       headers:{
         "Content-Type":"text/plain"
       },
-      body:friend?._id
+      body:id
     })
-     if(!following.ok){
+      }
+  const {mutate:mutateUnFollow,error:unFollowError} = useMutation({mutationFn:submitUnFollow})
+  const handleUnFollow= async()=>{
+    mutateUnFollow(user?._id)
+    if(unFollowError){
       console.log('something went wrong')
     }  
   }

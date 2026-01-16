@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react"
 import type { iPostRecived, iUser } from "./interfaces"
+import { useQuery } from "@tanstack/react-query"
 
 const PostByUser = ({user}:{user:iUser|undefined}) => {
-    const [posts,setPosts] = useState<iPostRecived[]>()
-    useEffect(()=>{
-        const getPosts = async()=>{
-            const res = await fetch(`http://localhost:3000/posts/${user?._id}/user`)
-            const data = await res.json()
-            setPosts(data)
-        }
-        getPosts()
-    },[user])
+  const { data:posts} = useQuery<iPostRecived[]>({
+  queryKey: ['posts'],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/posts/${user?._id}/user`,
+    )
+    return await response.json()
+  },
+  })
   return (
     <div>
         {posts?.map((post:iPostRecived)=>(

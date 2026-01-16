@@ -1,6 +1,7 @@
 
 import { useState } from "react"
 import type { iPost } from "./interfaces"
+import { useMutation } from "@tanstack/react-query"
 
 
 const FormPost = ({state}:{state:string}) => {
@@ -25,16 +26,20 @@ const FormPost = ({state}:{state:string}) => {
       [name]:value
     }))
   }
+  const submitPost = async(data:BodyInit)=>{
+          await fetch("http://localhost:3000/posts",{
+          method:'POST',
+          body:data
+         })
+      }
+  const {mutate} = useMutation({mutationFn:submitPost})
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
     const data = new FormData
     Object.entries(postData).forEach(([key,value])=>{
       data.append(key,value)
     })
-    await fetch("http://localhost:3000/posts",{
-      method:'POST',
-      body:data
-    })
+    mutate(data)
   } 
   return (
     <div className={`${state}`}>

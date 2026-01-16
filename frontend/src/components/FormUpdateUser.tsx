@@ -1,32 +1,21 @@
 
-import { useEffect, useState } from "react"
+import {useState } from "react"
 import type { iUser } from "./interfaces"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
-
-  const initialData:iUser = {
-    name:'',
-    userName:'',
-    email:'',
-    phone:'',
-    dob:'',
-    password:''
-  }
-  const [userData,setUserData] = useState(initialData)
   const [currentPassword,setCurrentPassword] =useState("")
   const [validatePassword,setValidatePassword] = useState(false)
-  useEffect(()=>{
-    const getUser = async ()=>{
-        const res = await fetch(`http://localhost:3000/users/${userEmail}/email`) 
-        const user = await res.json()
-        setUserData(state=>({
-            ...state,
-            ...user,
-            password:""
-        }))
-    }
-    getUser()
-  },[userEmail])
+  const { data } = useQuery({
+  queryKey: ['user',userEmail],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/users/${userEmail}/email`,
+    )
+    return await response.json()
+  },
+  })
+  const [userData,setUserData] = useState<iUser>({...data,password:''})
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
     const {name,value} = e.target
     setUserData(state=>({
@@ -34,37 +23,43 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
       [name]:name==='email'?userEmail:value
     }))
   }
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
-    e.preventDefault()
-      try {
-      await fetch(`http://localhost:3000/users/${userEmail}`,{
+  const submitUser = async(userData:iUser)=>{
+          await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {
     'Content-Type': 'application/json'
   },
     body:JSON.stringify(userData)
     })
+      }
+  const {mutate,status} = useMutation({mutationFn:submitUser})
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+      try {
+      mutate(userData)
       } catch (error) {
         console.log(error)
       }
   }
-  const handlePasswordSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
-    e.preventDefault()
-    const isValidPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/.test(userData.password)
-    if(!isValidPassword){
-      throw new Error('invalid Password')
-    }
-    const res = await fetch(`http://localhost:3000/users/${userEmail}`,{
+   const submitPassword = async(currentPassword:BodyInit)=>{
+          await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {
     'Content-Type': 'text/plain'
   },
     body:currentPassword
     })
-    if(res.status===200){
-        setValidatePassword(true)
-    }else{
-        console.log("invalid password")
+      }
+  const {mutate:mutatePassword} = useMutation({mutationFn:submitPassword})
+  const handlePasswordSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+    const isValidPassword = /^(?=.*?[0-9])(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^0-9A-Za-z]).{8,32}$/.test(userData.password)
+    if(!isValidPassword){
+      throw new Error('invalid Password')
+    }
+    mutatePassword(currentPassword)
+    if(status==='success'){
+      setValidatePassword(true)
     }
   }
   return (

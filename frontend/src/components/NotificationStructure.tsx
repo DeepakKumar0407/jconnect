@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react"
 import type { iNotification, iUser } from "./interfaces"
+import { useQuery } from "@tanstack/react-query"
 
 const NotificationStructure = ({user}:{user:iUser|undefined}) => {
  
-  const [notifications,setNotifications] = useState<iNotification[]>()
-  useEffect(()=>{
-    const getNotification = async()=>{
-      const res = await fetch('http://localhost:3000/notifications')
-      const data = await res.json()
-      setNotifications(data)
-    }
-    getNotification()
-  },[])
+  const { data:notifications} = useQuery<iNotification[]>({
+  queryKey: ['notification'],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/notifications`,
+    )
+    return await response.json()
+  },
+  })
   return (
         notifications?.map((notification:iNotification)=>(
           user?._id!==notification.userId&&

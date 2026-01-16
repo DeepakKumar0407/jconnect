@@ -1,20 +1,21 @@
 import { useEffect, useRef, useState } from "react"
 import PostStructure from "../components/PostStructure"
 import type { iPostRecived } from "../components/interfaces"
+import { useQuery } from "@tanstack/react-query"
 
 const SavedPosts = () => {
   const userId = "69615b843b9d8533212f8503"
   const scrollRef = useRef<HTMLDivElement>(null)
   const [yaxis,setYAxis] = useState(window.innerHeight)
-  const [savedPosts,setSavedPosts] = useState<iPostRecived[]>()
-  useEffect(()=>{
-    const getSavedPosts = async()=>{
-      const res = await fetch(`http://localhost:3000/users/${userId}/saved`)
-      const data = await res.json()
-      setSavedPosts(data)
-    }
-    getSavedPosts()
-  },[])
+  const { data:savedPosts } = useQuery({
+  queryKey: ['savedPosts',userId],
+  queryFn: async () => {
+    const response = await fetch(
+      `http://localhost:3000/users/${userId}/saved`,
+    )
+    return await response.json()
+  },
+  })
   useEffect(() => {
   const elem = scrollRef.current
   if (!elem) return
