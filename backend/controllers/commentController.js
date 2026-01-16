@@ -42,7 +42,7 @@ const getSingleComment = async(req,res)=>{
 const getLike = async(req,res)=>{
     try {
         const commentId = req.params.id
-        const email = '9868282600bull@gmail.com'
+        const email = 'deepak.kumar016211@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
         const likeStatus = await CommentModel.exists({_id:commentId,likes:user._id})
         res.status(200).json(likeStatus)
@@ -118,7 +118,7 @@ const updateComment = async(req,res)=>{
 const updateLike = async(req,res)=>{
     try {
         const commentId = req.params.id
-        const email = '9868282600bull@gmail.com'
+        const email = 'deepak.kumar016211@gmail.com'
         const user = await UserModel.findOne({email:email},{_id:1})
         const checkLike = await CommentModel.exists({_id:commentId,likes:user._id})
         if(checkLike===null){

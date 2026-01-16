@@ -3,12 +3,17 @@ import Navbar from "./components/Navbar";
 import FriendsList from "./components/FriendsList";
 import Footer from "./components/Footer";
 import './App.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Layout() {
-  const [scrennWidth,setScreenWidth] = useState<number>(1500)
-  window.addEventListener('resize',()=>setScreenWidth(window.innerWidth))
-  if(scrennWidth>768){
+  const [screenWidth,setScreenWidth] = useState<number>(1500)
+  useEffect(() => {
+  const onResize = () => setScreenWidth(window.innerWidth)
+
+  window.addEventListener("resize", onResize)
+  return () => window.removeEventListener("resize", onResize)
+}, [])
+  if(screenWidth>768){
     return (
     <>
       <Navbar />

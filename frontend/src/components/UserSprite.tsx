@@ -25,7 +25,6 @@ const UserSprite = ({friend,user}:{friend:iUser,user:iUser|undefined}) => {
       console.log('something went wrong')
     }  
   }
-  console.log(user?.following)
   return (
     <div className="mt-5 border-2 border-white/20 p-2">
       <div className="flex justify-baseline gap-4">

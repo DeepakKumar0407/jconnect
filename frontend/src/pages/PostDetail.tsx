@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import type { iPostRecived } from "../components/interfaces"
 import FormComment from "../components/FormComment"
@@ -12,6 +12,8 @@ import { TrashIcon } from "@heroicons/react/24/outline"
 const PostDetail = () => {
   const {id}= useParams()
   const [likeStatus,setLikeStatus] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [yaxis,setYAxis] = useState(window.innerHeight)
   const [post,setPost] = useState<iPostRecived>()
   const navigate = useNavigate()
   useEffect(()=>{
@@ -55,9 +57,46 @@ const PostDetail = () => {
   }
   const handleBack = ()=>{
     navigate(-1)
-  }  
+  } 
+  useEffect(() => {
+  const updateHeight = () => setYAxis(window.innerHeight)
+
+  updateHeight()
+  window.addEventListener("resize", updateHeight)
+
+  return () => window.removeEventListener("resize", updateHeight)
+}, [])
+  useEffect(() => {
+  const elem = scrollRef.current
+  if (!elem) return
+
+  const onScroll = () => {
+    sessionStorage.setItem("detail-scroll", String(elem.scrollTop))
+  }
+
+  elem.addEventListener("scroll", onScroll)
+  
+  return () => elem.removeEventListener("scroll", onScroll)
+}, [])
+useEffect(() => {
+  const elem = scrollRef.current
+  const saved = sessionStorage.getItem("detail-scroll")
+
+  if (elem && saved) {
+    elem.scrollTop = Number(saved)
+  }
+}, [])
+useEffect(() => {
+  const updateHeight = () => setYAxis(window.innerHeight)
+
+  updateHeight()
+  window.addEventListener("resize", updateHeight)
+
+  return () => window.removeEventListener("resize", updateHeight)
+}, []) 
   return (
-    <div className="div flex flex-col justify-baseline">
+    <div className={`div overflow-auto`} ref={scrollRef} style={{height:`${yaxis}px`}}>
+      <div className=" w-full flex flex-col justify-baseline">
       <div className="w-1/3 text-left pr-4 lg:text-2xl mb-5">
       <button onClick={handleBack} className=" bg-red-600 hover:bg-red-500 p-2 pl-4 pr-4 rounded cursor-pointer"><ArrowUturnLeftIcon className="icon"/></button>
       </div>
@@ -82,6 +121,7 @@ const PostDetail = () => {
       <FormComment postId={post&&post._id} type="comment"/>
       <p className="md:text-2xl mt-3 mb-2">Comments</p>
       <Comment postId={post?._id}/>
+        </div>
     </div>
   )
 }

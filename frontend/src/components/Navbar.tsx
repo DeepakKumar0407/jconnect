@@ -22,7 +22,7 @@ const Navbar = () => {
     getUser()
   },[])
   return (
-    <div className="max-w-fit min-w-1/7 p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text border-r-2 border-white/20 top-0 left-0 fixed h-full">
+    <div className="w-fit p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text border-r-2 border-white/20 top-0 left-0 sticky">
       <div className="flex justify-between gap-2 items-center">
         {user?.profilePic?(<img src={user.profilePic} className="w-10 h-10 lg:w-20 lg:h-20 rounded-full"></img>):
         (<p className="bg-white text-black w-10 h-10 lg:w-20 lg:h-20 flex rounded-full justify-center items-center lg:text-2xl font-bold">{user?.userName[0].toUpperCase()}</p>)}

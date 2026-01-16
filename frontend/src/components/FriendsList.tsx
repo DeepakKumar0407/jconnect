@@ -26,7 +26,7 @@ const FriendsList = () => {
     getFriends()
   },[])
   return (
-    <div className="min-w-1/4 max-w-fit p-2 mt-5 border-l-2 border-b-2 border-white/20 h-full ">
+    <div className="min-w-1/4 max-w-fit p-2 mt-5 border-l-2 border-b-2 border-white/20 sticky top-0 right-0">
         <h1>Friend list</h1>
         {friends?.map((friend:iUser)=>(
          <div key={friend._id}>
