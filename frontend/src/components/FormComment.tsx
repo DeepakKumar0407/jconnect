@@ -52,8 +52,8 @@ const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:s
       <textarea className="w-1/2 placeholder:text-white placeholder:text-sm border-2 border-white rounded p-1" rows={1} name="textContent" value={comment.textContent} onChange={handleChange} placeholder={`Make a ${type}`} required></textarea>
       <label htmlFor={id==='comment'?"comment":"reply"} onClick={()=>console.log(type)}>Image<input id={id==='comment'?"comment":"reply"} type="file" name="imageContent" onChange={(e)=>{setComment(state=>({...state,imageContent:e.target.files?.[0]||null}))}} className="hidden"></input></label>
       <button>Post</button>
-      <div>{comment.imageContent&&<img src={URL.createObjectURL(comment.imageContent)} className="w-1/2 mt-2 mb-2"></img>}</div>
       </form>
+      <div>{comment.imageContent&&<img src={URL.createObjectURL(comment.imageContent)} className="w-1/2 mt-2 mb-2"></img>}</div>
       {id==='reply'?(<Link to={`/post_details/${postId}`}>Back</Link>):("")}
     </div>
     </div>

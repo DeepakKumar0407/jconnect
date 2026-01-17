@@ -13,7 +13,7 @@ export default function Layout() {
   window.addEventListener("resize", onResize)
   return () => window.removeEventListener("resize", onResize)
 }, [])
-  if(screenWidth>768){
+  if(screenWidth>767){
     return (
     <>
       <Navbar />

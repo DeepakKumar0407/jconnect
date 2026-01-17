@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import type { CommentNode} from "./interfaces"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Link, Outlet } from "react-router-dom"
+import { HeartIcon, TrashIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/solid"
 
 const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:string|undefined }) => {
   const [likeStatus, setLikeStatus] = useState<boolean>()
@@ -63,35 +64,35 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
           {user?.profilePic ? (
             <img
               src={user.profilePic}
-              className="w-5 h-5 rounded-4xl"
+              className="w-5 h-5 lg:w-10 lg:h-10 rounded-4xl"
               alt="Profile"
             />
           ) : (
-            <p className="bg-white text-black w-5 h-5 flex rounded-4xl justify-center items-center md:text-base">
+            <p className="bg-white text-black w-5 h-5 lg:w-10 lg:h-10 flex rounded-4xl justify-center items-center md:text-base">
               {user?.userName[0].toUpperCase()}
             </p>
           )}
-          <p className="w-1/2 md:text-base">@{user?.userName}</p>
+          <p className="w-1/2 lg:text-xl">@{user?.userName}</p>
         </div>
         <div>
-          <p>{comment.textContent}</p>
+          <p className="lg:text-xl">{comment.textContent}</p>
           {comment.imageContent && (
             <img src={comment.imageContent} className="w-48 h-27" alt="Comment" />
           )}
         </div>
-        <div className="flex justify-baseline gap-5">
+        <div className="flex justify-baseline gap-5 mt-2">
           <p>
             {likeStatus ? (
-              <button onClick={handleLikeClick}>Unlike</button>
+              <button onClick={handleLikeClick}><HeartIcon className="icon text-green-600 cursor-pointer"/></button>
             ) : (
-              <button onClick={handleLikeClick}>Like</button>
+              <button onClick={handleLikeClick}><HeartIcon className="icon text-white cursor-pointer"/></button>
             )}
           </p>
           <p>
-            <button onClick={handleDelete}>Delete</button>
+            <button onClick={handleDelete} ><TrashIcon className="icon text-red-600 cursor-pointer"/></button>
           </p>
+          <Link to={`/post_details/${postId}/reply/${comment.postId}/${comment._id}`}><button onClick={handleStateClick}><ChatBubbleBottomCenterTextIcon className="icon"/></button></Link>
         </div>
-        <Link to={`/post_details/${postId}/reply/${comment.postId}/${comment._id}`}><button onClick={handleStateClick}>Comment</button></Link>
       </div>
       <div>
         {comment.children.length > 0 &&

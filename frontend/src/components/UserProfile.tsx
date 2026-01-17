@@ -38,12 +38,14 @@ const UserProfile = ({user,userCurrent}:{user:iUser|undefined,userCurrent:iUser|
     <div className="w-full flex flex-col justify-baseline gap-3">
       {user?.profilePic?(<img src={user.profilePic} className="w-40 h-40 lg:w-20 lg:h-20 rounded-full"></img>):
         (<p className="bg-white text-black w-20 h-20 lg:w-40 lg:h-40 flex rounded-full justify-center items-center text-xl lg:text-6xl font-bold">{user?.userName[0].toUpperCase()}</p>)}
-      <p>{user?.name}</p>
-      <p>All user details</p>
-      <p>Edit Profile</p>
-      <p>Posts</p>
-      <p>Comments made</p>
-      <p>Likes made</p>
+      <div className="ml-5">
+        <p className="lg:text-2xl">{user?.name}</p>
+        <p className="lg:text-xl mb-3">@{user?.userName}</p>
+        <p className="lg:text-2xl">Mob:-{user?.phone}</p>
+        <p className="lg:text-2xl mb-3">Email:-{user?.email}</p>
+        <p className="lg:text-2xl">Birthday: {user?.dob}</p>
+        <p className="lg:text-xl mb-3">{user?.bio}</p>
+      </div>
       {userCurrent?.email!==user?.email&&
       <div className="">
       {user?._id&& userCurrent?.following?.includes(user._id)?(<button onClick={handleUnFollow}>Unfollow</button>)

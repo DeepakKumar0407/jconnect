@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 
 const Profile = () => {
   const [yaxis,setYAxis] = useState(window.innerHeight)
+  const [selection,setSection] = useState('posts')
   const currentUserEmail = "deepak.kumar016211@gmail.com"//jwt
   const {id} = useParams()
    const { data:user } = useQuery({
@@ -36,11 +37,18 @@ const Profile = () => {
     return () => window.removeEventListener("resize", updateHeight)
   }, [])
   return (
-    <div className="div overflow-auto" style={{height:`${yaxis}px`}}>
+    <div className="div overflow-auto p-2" style={{height:`${yaxis}px`}}>
      <div className="w-full">
       {user&&userCurrent&&<UserProfile user={user} userCurrent={userCurrent}/>}
-      {user&&<CommentByUser user={user}/>}
-      {user&&<PostByUser user={user}/>}
+      <div className="ml-5 lg:text-2xl flex justify-baseline gap-5">
+        <button onClick={()=>setSection('posts')} className={`cursor-pointer pb-2 ${selection==='posts'?'border-b-2':''} border-green-600`}>Post</button>
+        <button onClick={()=>setSection('comments')} className={`cursor-pointer pb-2 ${selection==='comments'?'border-b-2':''} border-green-600`}>Comments</button>
+      </div>
+      {selection==='posts'?
+      (<div>{user&&<PostByUser user={user}/>}</div>)
+      :(<div>{user&&<CommentByUser user={user}/>}</div>)}
+    
+    
     </div>
     </div>
   )

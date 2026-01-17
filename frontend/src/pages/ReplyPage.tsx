@@ -14,7 +14,7 @@ const ReplyPage = () => {
         return () => window.removeEventListener("resize", updateHeight)
     }, [])
   return (
-    <div className={`div overflow-auto`} style={{height:`${yaxis}px`}}>
+    <div className={`w-full`} style={{height:`${yaxis}px`}}>
            <FormReply
           postId={postId}
           parentId={parentId}

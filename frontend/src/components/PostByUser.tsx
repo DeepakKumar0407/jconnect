@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import type { iPostRecived, iUser } from "./interfaces"
 import { useQuery } from "@tanstack/react-query"
 
@@ -12,10 +13,18 @@ const PostByUser = ({user}:{user:iUser|undefined}) => {
   },
   })
   return (
-    <div>
+    <div className="w-full ml-5 mb-22 ">
         {posts?.map((post:iPostRecived)=>(
             <div key={post._id}>
-                <p>{post.textContent}</p>
+                  
+      <Link to={`/post_details/${post._id}`} className="w-full">
+      <p className="mt-2 lg:text-2xl mb-2">{post.textContent}</p>
+      {post.imageContent!=="null"&&<img src={post.imageContent} className="w-fit"></img>}
+      {post.videoContent!=="null"&& 
+      <video controls>
+        <source src={post.videoContent} type="video/mp4"></source>
+      </video>}
+      </Link>
             </div>
         ))}
     </div>

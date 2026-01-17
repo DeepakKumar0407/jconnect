@@ -3,10 +3,10 @@ import { useState } from "react";
 import type { iComment } from "./interfaces";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PhotoIcon } from "@heroicons/react/24/solid"
 
 const FormReply = ({postId,parentId,type}:{postId:string|undefined,parentId?:string|null,type:string}) => {
     
-    const id = type
     const initialData:iComment = {
         textContent:"",
         postId:"",
@@ -46,16 +46,14 @@ const FormReply = ({postId,parentId,type}:{postId:string|undefined,parentId?:str
     }
     
   return (
-    <div>
-    <div>
-      <form className="w-full flex justify-baseline gap-5" onSubmit={handleSubmit}>
-      <textarea className="w-1/2 placeholder:text-white placeholder:text-sm border-2 border-white rounded p-1" rows={1} name="textContent" value={comment.textContent} onChange={handleChange} placeholder={`Make a ${type}`} required></textarea>
-      <label htmlFor={id==='comment'?"comment":"reply"} onClick={()=>console.log(type)}>Image<input id={id==='comment'?"comment":"reply"} type="file" name="imageContent" onChange={(e)=>{setComment(state=>({...state,imageContent:e.target.files?.[0]||null}))}} className="hidden"></input></label>
-      <button>Post</button>
-      <div>{comment.imageContent&&<img src={URL.createObjectURL(comment.imageContent)} className="w-1/2 mt-2 mb-2"></img>}</div>
+    <div className="w-full min-w-1/2">
+      <form className="w-full flex flex-col justify-baseline gap-5" onSubmit={handleSubmit}>
+      <textarea className="w-full min-w-50 placeholder:text-white placeholder:text-sm border-2 border-white rounded p-1" rows={5} cols={5} name="textContent" value={comment.textContent} onChange={handleChange} placeholder={`Make a ${type}`} required></textarea>
+      <label htmlFor="reply" onClick={()=>console.log(type)}><PhotoIcon className="icon"/><input id="reply" type="file" name="imageContent" onChange={(e)=>{setComment(state=>({...state,imageContent:e.target.files?.[0]||null}))}} className="hidden"></input></label>
+      <button className="p-2 text-center bg-green-600 hover:bg-green-500 w-fit mx-auto cursor-pointer rounded mb-5">Post</button>
       </form>
-      {id==='reply'?(<Link to={`/post_details/${postId}`}>Back</Link>):("")}
-    </div>
+      <div>{comment.imageContent&&<img src={URL.createObjectURL(comment.imageContent)} className="w-1/2 min-w-50 mt-2 mb-5"></img>}</div>
+      <Link to={`/post_details/${postId}`} className=" bg-red-600 hover:bg-red-500 p-2 pl-4 pr-4 rounded cursor-pointer text-xl">&larr;</Link>
     </div>
   )
 }

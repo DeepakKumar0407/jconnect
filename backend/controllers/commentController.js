@@ -54,7 +54,7 @@ const getLike = async(req,res)=>{
 
 const createComment =async(req,res)=>{
     try {
-        const userId = '6963847e565c7f293a2d9279'
+        const userId = '69615b843b9d8533212f8503'
         const data = {...req.body}
         data.userId = userId
         let imageUrl = null
