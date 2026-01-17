@@ -6,7 +6,7 @@ import './App.css'
 import { useEffect, useState } from "react";
 
 export default function Layout() {
-  const [screenWidth,setScreenWidth] = useState<number>(1500)
+  const [screenWidth,setScreenWidth] = useState<number>(window.innerWidth)
   useEffect(() => {
   const onResize = () => setScreenWidth(window.innerWidth)
 

@@ -15,7 +15,8 @@ const PostStructure = ({post}:{post:iPostRecived}) => {
       <Link to={`/post_details/${post._id}`} className="w-full">
       <p className="mt-2 lg:text-2xl mb-2">{post.textContent}</p>
       {post.imageContent!=="null"&&<img src={post.imageContent} className="w-fit"></img>}
-      {post.videoContent!=="null"&& <video controls>
+      {post.videoContent!=="null"&& 
+      <video controls>
         <source src={post.videoContent} type="video/mp4"></source>
       </video>}
       </Link>

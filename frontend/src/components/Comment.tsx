@@ -47,8 +47,8 @@ const commentTree = useMemo(() => {
   return (
     <div className="flex flex-col gap-10 mb-22">
     {commentTree?.map((child:CommentNode)=>(
-      <div key={child._id} className="border-2 border-white/50 bg-white/5 rounded p-4">
-        <CommentStructure comment={child}/>
+      <div key={child._id} className="border-2 border-white/50 bg-white/5 rounded p-4 overflow-y-auto">
+        <CommentStructure comment={child} postId={postId}/>
       </div>
     ))}
     </div>

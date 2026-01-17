@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import type { iUser } from "./interfaces"
 import { HomeIcon } from "@heroicons/react/24/solid"
-import { PlusCircleIcon } from "@heroicons/react/24/solid"
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid"
 import { UserCircleIcon } from "@heroicons/react/24/solid"
 import { BookmarkSquareIcon } from "@heroicons/react/24/solid"
@@ -22,7 +21,7 @@ const Navbar = () => {
   },
   })
   return (
-    <div className="w-fit p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text border-r-2 border-white/20 top-0 left-0 sticky">
+    <div className="md:w-1/5 w-fit p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text-xl border-r-2 border-white/20 top-0 left-0">
       <div className="flex justify-between gap-2 items-center">
         {user?.profilePic?(<img src={user.profilePic} className="w-10 h-10 lg:w-20 lg:h-20 rounded-full"></img>):
         (<p className="bg-white text-black w-10 h-10 lg:w-20 lg:h-20 flex rounded-full justify-center items-center lg:text-2xl font-bold">{user?.userName[0].toUpperCase()}</p>)}
@@ -32,7 +31,6 @@ const Navbar = () => {
       <hr></hr>
        <div className="flex flex-col justify-baseline gap-5 lg:text-2xl">
         <Link to="/" className="flex gap-2 items-center"><HomeIcon className="icon"/> Home</Link>
-        <Link to="Post" className="flex gap-2 items-center"><PlusCircleIcon className="icon"/> Post</Link>
         <Link to="chat_room" className="flex gap-2 items-center"><ChatBubbleLeftEllipsisIcon className="icon"/> Chat Room</Link>
         <Link to={`profile/${user?._id}`} className="flex gap-2 items-center"><UserCircleIcon className="icon"/> Profile</Link>
         <Link to="saved" className="flex gap-2 items-center"><BookmarkSquareIcon className="icon" /> Saved Posts</Link>

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import FormComment from "./FormComment"
 import type { CommentNode} from "./interfaces"
 import { useMutation, useQuery } from "@tanstack/react-query"
+import { Link, Outlet } from "react-router-dom"
 
-const CommentStructure = ({ comment }: { comment: CommentNode }) => {
+const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:string|undefined }) => {
   const [likeStatus, setLikeStatus] = useState<boolean>()
+  const [state,setState] = useState('comment')
   const { data: likes } = useQuery({
     queryKey: ["likeStatus", comment],
     queryFn: async () => {
@@ -14,7 +15,13 @@ const CommentStructure = ({ comment }: { comment: CommentNode }) => {
       return await response.json()
     },
   })
-
+  const handleStateClick = ()=>{
+    if(state==='comment'){
+      setState('')
+    }else{
+      setState('comment')
+    }
+  }
   useEffect(() => {
     const like = !!likes
     const setInitialLike = ()=> setLikeStatus(like)
@@ -49,10 +56,9 @@ const CommentStructure = ({ comment }: { comment: CommentNode }) => {
   const handleDelete = async () => {
     mutateLikeDelete()
   }
-
   return (
-    <div>
-      <div className="flex flex-col justify-baseline gap-1">
+     state==='comment'?(<div className="w-full">
+       <div className="flex flex-col justify-baseline gap-1">
         <div className="flex justify-baseline gap-5 items-center">
           {user?.profilePic ? (
             <img
@@ -85,11 +91,7 @@ const CommentStructure = ({ comment }: { comment: CommentNode }) => {
             <button onClick={handleDelete}>Delete</button>
           </p>
         </div>
-        <FormComment
-          postId={comment.postId}
-          parentId={comment._id}
-          type="reply"
-        />
+        <Link to={`/post_details/${postId}/reply/${comment.postId}/${comment._id}`}><button onClick={handleStateClick}>Comment</button></Link>
       </div>
       <div>
         {comment.children.length > 0 &&
@@ -98,11 +100,11 @@ const CommentStructure = ({ comment }: { comment: CommentNode }) => {
               className="ml-3 mt-5 border-l pl-2 border-white/50"
               key={reply._id}
             >
-              <CommentStructure comment={reply} />
+              <CommentStructure comment={reply} postId={postId}/>
             </div>
           ))}
       </div>
-    </div>
+     </div>):(<Outlet/>)
   )
 }
 

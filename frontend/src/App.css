@@ -5,7 +5,7 @@ html{
 }
 
 body{
-    @apply text-white bg-black w-fit
+    @apply text-white bg-black w-full
 }
 h1{
     @apply text-base sm:text-xl md:text-2xl lg:text-4xl
@@ -14,7 +14,7 @@ h1{
   @apply w-full
 }
 .div{
-@apply p-5 w-fit
+@apply p-5 md:w-3/5 w-fit
 }
 .icon {
   @apply w-5 h-5 lg:w-7 lg:h-7 inline

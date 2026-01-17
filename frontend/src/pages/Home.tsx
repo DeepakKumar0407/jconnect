@@ -3,6 +3,7 @@ import FormPost from "../components/FormPost"
 import PostStructure from "../components/PostStructure"
 import type { iPostRecived } from "../components/interfaces"
 import { useQuery } from "@tanstack/react-query"
+import { PlusIcon } from "@heroicons/react/24/outline"
 
 const Home = () => {
   const [yaxis,setYAxis] = useState(window.innerHeight)
@@ -60,7 +61,7 @@ useEffect(() => {
     <div className={`div overflow-auto`} ref={scrollRef} style={{height:`${yaxis}px`}}>
       <div className="flex justify-between mr-10 mb-5 ">
         <h1>For You</h1>
-        <button className="lg:text-2xl" onClick={handleClick}>Post</button>
+        <button className="lg:text-2xl flex align-middle gap-2 cursor-pointer" onClick={handleClick}>Post <PlusIcon className="icon"/></button>
       </div>
       <FormPost state={state}/>
     <div className="flex flex-col justify-baseline gap-20 mt-10 w-full pb-22">

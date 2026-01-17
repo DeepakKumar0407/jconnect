@@ -35,7 +35,7 @@ const submitFollow = async(id:string|undefined)=>{
     }  
   }
   return (
-    <div className="mt-5 border-2 border-white/20 p-2">
+    <div className="mt-5 border-2 border-white/20 p-2 w-full">
       <div className="flex justify-baseline gap-4">
         {friend?.profilePic?(<img src={friend.profilePic} className="w-10 h-10 lg:w-15 lg:h-15 rounded-full"></img>):
         (<p className="bg-white text-black w-10 h-10 lg:w-15 lg:h-15 flex rounded-full justify-center items-center md:text-xl">{friend?.userName[0].toUpperCase()}</p>)}

@@ -35,8 +35,9 @@ const UserProfile = ({user,userCurrent}:{user:iUser|undefined,userCurrent:iUser|
     }  
   }
   return (
-    <div>
-      <p>Image</p>
+    <div className="w-full flex flex-col justify-baseline gap-3">
+      {user?.profilePic?(<img src={user.profilePic} className="w-40 h-40 lg:w-20 lg:h-20 rounded-full"></img>):
+        (<p className="bg-white text-black w-20 h-20 lg:w-40 lg:h-40 flex rounded-full justify-center items-center text-xl lg:text-6xl font-bold">{user?.userName[0].toUpperCase()}</p>)}
       <p>{user?.name}</p>
       <p>All user details</p>
       <p>Edit Profile</p>

@@ -3,8 +3,10 @@ import CommentByUser from "../components/CommentByUser"
 import PostByUser from "../components/PostByUser"
 import UserProfile from "../components/UserProfile"
 import { useQuery } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 
 const Profile = () => {
+  const [yaxis,setYAxis] = useState(window.innerHeight)
   const currentUserEmail = "deepak.kumar016211@gmail.com"//jwt
   const {id} = useParams()
    const { data:user } = useQuery({
@@ -25,11 +27,21 @@ const Profile = () => {
     return await response.json()
   },
   })
+  useEffect(() => {
+    const updateHeight = () => setYAxis(window.innerHeight)
+  
+    updateHeight()
+    window.addEventListener("resize", updateHeight)
+  
+    return () => window.removeEventListener("resize", updateHeight)
+  }, [])
   return (
-    <div className="div md:text-base lg:text-xl">
+    <div className="div overflow-auto" style={{height:`${yaxis}px`}}>
+     <div className="w-full">
       {user&&userCurrent&&<UserProfile user={user} userCurrent={userCurrent}/>}
       {user&&<CommentByUser user={user}/>}
       {user&&<PostByUser user={user}/>}
+    </div>
     </div>
   )
 }

@@ -14,6 +14,7 @@ import Notifications from "./pages/Notifications";
 import Post from "./pages/Post";
 import Layout from "./Layout";
 import './App.css'
+import ReplyPage from "./pages/ReplyPage";
 
 
 const router = createBrowserRouter([
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       { path: "/chat_room", element: <ChatRoom /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Registration /> },
-      { path: "/post_details/:id", element: <PostDetail /> },
+      { path: "/post_details/:id", element: <PostDetail />,children:[{path: "/post_details/:id/reply/:postId/:parentId", element: <ReplyPage />}] },
       { path: "/profile/:id", element: <Profile /> },
       { path: "/saved", element: <SavedPosts /> },
       { path: "/search/:blob", element: <SearchResults /> },
