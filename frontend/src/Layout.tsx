@@ -4,6 +4,7 @@ import FriendsList from "./components/FriendsList";
 import Footer from "./components/Footer";
 import './App.css'
 import { useEffect, useState } from "react";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 export default function Layout() {
   const [screenWidth,setScreenWidth] = useState<number>(window.innerWidth)
@@ -15,13 +16,15 @@ export default function Layout() {
 }, [])
   if(screenWidth>767){
     return (
-    <>
+      <>
+      <ProtectedRoutes>
       <Navbar />
         <Outlet />
       <FriendsList />
       <Footer />
       <ScrollRestoration/>
-    </>
+      </ProtectedRoutes>
+      </>
   );
 }else{
   return (

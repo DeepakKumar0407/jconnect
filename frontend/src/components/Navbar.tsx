@@ -30,11 +30,11 @@ const Navbar = () => {
       <p className="lg:text-2xl w-full">@{user?.userName}</p>
       <hr></hr>
        <div className="flex flex-col justify-baseline gap-5 lg:text-2xl">
-        <Link to="/" className="flex gap-2 items-center"><HomeIcon className="icon"/> Home</Link>
+        <Link to="/home" className="flex gap-2 items-center"><HomeIcon className="icon"/> Home</Link>
         <Link to="chat_room" className="flex gap-2 items-center"><ChatBubbleLeftEllipsisIcon className="icon"/> Chat Room</Link>
         <Link to={`profile/${user?._id}`} className="flex gap-2 items-center"><UserCircleIcon className="icon"/> Profile</Link>
         <Link to="saved" className="flex gap-2 items-center"><BookmarkSquareIcon className="icon" /> Saved Posts</Link>
-        <Link to="login" className="flex gap-2 items-center">Login</Link>
+        <Link to="/" className="flex gap-2 items-center">Login</Link>
         <Link to="register" className="flex gap-2 items-center">Register</Link>
         <hr></hr>
         <Link to="notifications" className="flex gap-2 items-center"><BellAlertIcon className="icon"/> Notifications</Link>

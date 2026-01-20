@@ -4,6 +4,7 @@ import userRoutes from "./routes/userRoutes.js"
 import postRoutes from "./routes/postRoutes.js"
 import commentRoutes from "./routes/commentRoutes.js"
 import notificationRoutes from "./routes/notificationRoutes.js"
+import authRoutes from './routes/authRoutes.js'
 import bodyParser from "body-parser"
 import cloudinary from "./cloudinaryConfig.js";
 import 'dotenv/config'
@@ -37,6 +38,7 @@ app.use("/users",userRoutes)
 app.use("/posts",postRoutes)
 app.use("/comments",commentRoutes)
 app.use("/notifications",notificationRoutes)
+app.use("/auth",authRoutes)
 
 app.listen(port,()=>{
   console.log(`listining at port ${port}`)

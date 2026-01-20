@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { iLogin } from "./interfaces";
-import { useMutation } from "@tanstack/react-query";
 
 const FormLogin = () => {
   const initialData:iLogin = {
@@ -15,19 +14,22 @@ const FormLogin = () => {
       [name]:value
     }))
   }
-  const checkLogin = async(userData:iLogin)=>{
-        await fetch('http://localhost:3000/users/login',{
+  const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+    const res = await fetch('http://localhost:3000/auth/login',{
            method:"POST",
         headers: {
         'Content-Type': 'application/json'
       },
         body:JSON.stringify(userData)
         })
+    const token = await res.json()
+    if(!res.ok){
+      console.log('login failed')
     }
-  const {mutate} = useMutation({mutationFn:checkLogin})
-  const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
-    e.preventDefault()
-    mutate(userData)
+    if(token.length>0)
+    localStorage.setItem('jwt_token',token)
+   
   }
   return (
       <div className="w-full">

@@ -1,13 +1,14 @@
 import express from 'express'
 import { getAllPosts,getAllPostsByUser,getOnePost,createPost,updatePost,deletePost,updateLike,getLike, getSearchPosts } from '../controllers/postController.js'
 import multer from 'multer'
+import authenticateToken from '../middleware/tokenVerification.js'
 
 const router = express.Router()
 const upload = multer({
     storage:multer.memoryStorage(),
     limits:{ fileSize: 100 * 1024 * 1024 }
 })
-router.get('/',getAllPosts)
+router.get('/',authenticateToken, getAllPosts)
 router.get('/:id/user',getAllPostsByUser)
 router.get('/:blob/search',getSearchPosts)
 router.get('/:id',getOnePost)

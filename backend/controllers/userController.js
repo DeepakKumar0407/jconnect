@@ -55,23 +55,6 @@ const getOneUserById= async (req,res)=>{
     }
 }
 
-const loginUser= async(req,res)=>{
-    try {
-        const data = req.body
-        const user = await UserModel.findOne({email:data.email})
-        if(!user){
-            throw new Error('Invalid Credentials')
-        }
-        const isPassword = await bcrypt.compare(data.password,user.password)
-        if(!isPassword){
-            throw new Error('Invalid Credentials')
-        }
-        res.status(200).json(user)
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error)
-    }
-}
 
 const getLikedPosts = async(req,res)=>{
     try {
@@ -180,4 +163,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,getLikedPosts, loginUser,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}
+export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,getLikedPosts,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}

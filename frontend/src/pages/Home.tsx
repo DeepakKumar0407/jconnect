@@ -13,7 +13,12 @@ const Home = () => {
   queryKey: ['post'],
   queryFn: async () => {
     const response = await fetch(
-      'http://localhost:3000/posts',
+      'http://localhost:3000/posts',{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },
