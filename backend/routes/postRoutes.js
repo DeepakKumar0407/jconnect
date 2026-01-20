@@ -9,13 +9,13 @@ const upload = multer({
     limits:{ fileSize: 100 * 1024 * 1024 }
 })
 router.get('/',authenticateToken, getAllPosts)
-router.get('/:id/user',getAllPostsByUser)
-router.get('/:blob/search',getSearchPosts)
-router.get('/:id',getOnePost)
-router.get('/:id/like',getLike)
-router.post('/',upload.fields([{name:"imageContent",maxCount:1},{name:"videoContent",maxCount:1}]),createPost)
-router.patch("/:id",upload.fields([{name:"imageContent",maxCount:1},{name:"videoContent",maxCount:1}]),updatePost)
-router.patch('/:id/like',updateLike)
-router.delete('/:id',deletePost)
+router.get('/:id/user',authenticateToken,getAllPostsByUser)
+router.get('/:blob/search',authenticateToken,getSearchPosts)
+router.get('/:id',authenticateToken,getOnePost)
+router.get('/:id/like',authenticateToken,getLike)
+router.post('/',upload.fields([{name:"imageContent",maxCount:1},{name:"videoContent",maxCount:1}]),authenticateToken,createPost)
+router.patch("/:id",upload.fields([{name:"imageContent",maxCount:1},{name:"videoContent",maxCount:1}]),authenticateToken,updatePost)
+router.patch('/:id/like',authenticateToken,updateLike)
+router.delete('/:id',authenticateToken,deletePost)
 
 export default router

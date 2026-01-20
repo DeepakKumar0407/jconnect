@@ -2,6 +2,7 @@
 import { useState } from "react"
 import type { iUser } from "./interfaces"
 import { useMutation } from "@tanstack/react-query"
+import { Link } from "react-router-dom"
 
 
 const FormRegister = () => {
@@ -44,17 +45,20 @@ const FormRegister = () => {
     }
   }
   return (
-    <div className="w-full">
+     <div className="w-full  md:justify-end flex justify-center align-middle items-center h-full p-3">
+    <div className="w-full md:w-1/2 lg:w-1/3 flex flex-col justify-baseline gap-5 bg-white/20 border-2 border-white/80 rounded items-center p-4 h-fit">
       <h1>Register</h1>
       <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-        <label htmlFor="name">name</label><input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" required></input>
-        <label htmlFor="username">username</label><input type="text" name="userName" value={userData.userName} onChange={handleChange} placeholder="username" required></input>
-        <label htmlFor="email">email</label><input type="email" name="email" value={userData.email} onChange={handleChange} placeholder="email" required></input>
-        <label htmlFor="phone">phone</label><input type="tel" name="phone" value={userData.phone} onChange={handleChange} placeholder="phone" required></input>
-        <label htmlFor="dob">dob</label><input type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" required></input>
-        <label htmlFor="password">password</label><input type="password" name="password" value={userData.password} onChange={handleChange} placeholder="password" required></input>
-        <button>Submit</button>
+        <label htmlFor="name">Name: </label><input id="name" type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" className="border-2 border-white/80 rounded p-2" required></input>
+        <label htmlFor="username">Username: </label><input id="username" type="text" name="userName" value={userData.userName} onChange={handleChange} placeholder="username" className="border-2 border-white/80 rounded p-2" required></input>
+        <label htmlFor="email">Email: </label><input id="email" type="email" name="email" value={userData.email} onChange={handleChange} placeholder="email" className="border-2 border-white/80 rounded p-2" required></input>
+        <label htmlFor="phone">Phone: </label><input id="phone" type="tel" name="phone" value={userData.phone} onChange={handleChange} placeholder="phone" className="border-2 border-white/80 rounded p-2" required></input>
+        <label htmlFor="dob">Dob: </label><input id="dob" type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" className="border-2 border-white/80 rounded p-2" required></input>
+        <label htmlFor="password">Password: </label><input id="password" type="password" name="password" value={userData.password} onChange={handleChange} placeholder="password" className="border-2 border-white/80 rounded p-2" required></input>
+        <div className="w-full flex justify-center"><button className="bg-green-600 hover:bg-green-500 rounded w-1/3 p-2">Submit</button></div>
       </form>
+      <div className="w-full flex justify-end text-blue-700"><Link to="/login">login</Link></div>
+    </div>
     </div>
   )
 }

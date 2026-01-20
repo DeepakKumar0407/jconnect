@@ -14,7 +14,7 @@ export interface iUser {
   email:string;
   phone:string;
   dob:string;
-  bio:string;
+  bio?:string;
   password:string;
   followers?:string[];
   following?:string[];

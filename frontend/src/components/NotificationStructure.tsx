@@ -7,7 +7,12 @@ const NotificationStructure = ({user}:{user:iUser|undefined}) => {
   queryKey: ['notification'],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/notifications`,
+      `http://localhost:3000/notifications`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

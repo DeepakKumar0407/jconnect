@@ -7,7 +7,12 @@ const Notifications = () => {
   queryKey: ['user',email],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${email}/email`,
+      `http://localhost:3000/users/${email}/email`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

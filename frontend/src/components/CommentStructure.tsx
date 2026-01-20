@@ -11,7 +11,12 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
     queryKey: ["likeStatus", comment],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:3000/comments/${comment._id}/like`
+        `http://localhost:3000/comments/${comment._id}/like`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
       )
       return await response.json()
     },
@@ -32,7 +37,12 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
     queryKey: ["comment", comment],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:3000/users/${comment.userId}/id`
+        `http://localhost:3000/users/${comment.userId}/id`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
       )
       return await response.json()
     },

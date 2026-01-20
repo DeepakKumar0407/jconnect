@@ -19,14 +19,13 @@ import ReplyPage from "./pages/ReplyPage";
 
 const router = createBrowserRouter([
   {path:"/login",element:<Login/>},
+  {path:"/register",element:<Registration/>},
   {
     element: <Layout />,
     children: [
-      { path: "/", element: <Login />},
       { path: "/about", element: <About /> },
       { path: "/chat_room", element: <ChatRoom /> },
       { path: "/home", element: <Home /> },
-      { path: "/register", element: <Registration /> },
       { path: "/post_details/:id", element: <PostDetail />,children:[{path: "/post_details/:id/reply/:postId/:parentId", element: <ReplyPage />}] },
       { path: "/profile/:id", element: <Profile /> },
       { path: "/saved", element: <SavedPosts /> },

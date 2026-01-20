@@ -6,7 +6,12 @@ const SearchUsers= ({blob}:{blob:string}) => {
   queryKey: ['searchResult',blob],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${blob}/search`,
+      `http://localhost:3000/users/${blob}/search`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

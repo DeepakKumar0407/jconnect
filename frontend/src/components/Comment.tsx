@@ -9,7 +9,12 @@ const Comment = ({postId}:{postId:string|undefined}) => {
   queryKey: ['comments',postId],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/comments/${postId}/post`,
+      `http://localhost:3000/comments/${postId}/post`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

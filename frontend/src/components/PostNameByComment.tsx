@@ -6,7 +6,12 @@ const PostNameByComment = ({comment}:{comment:iCommentRecived}) => {
   queryKey: ['post',comment?.postId],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/posts/${comment?.postId}`,
+      `http://localhost:3000/posts/${comment?.postId}`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

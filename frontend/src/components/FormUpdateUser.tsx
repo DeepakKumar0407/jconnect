@@ -10,7 +10,12 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
   queryKey: ['user',userEmail],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${userEmail}/email`,
+      `http://localhost:3000/users/${userEmail}/email`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

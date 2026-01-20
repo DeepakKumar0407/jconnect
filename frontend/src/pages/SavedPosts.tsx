@@ -11,7 +11,12 @@ const SavedPosts = () => {
   queryKey: ['savedPosts',userId],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${userId}/saved`,
+      `http://localhost:3000/users/${userId}/saved`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

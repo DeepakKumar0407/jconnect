@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { iLogin } from "./interfaces";
+import { Link } from "react-router-dom";
 
 const FormLogin = () => {
   const initialData:iLogin = {
@@ -32,13 +33,16 @@ const FormLogin = () => {
    
   }
   return (
-      <div className="w-full">
-      <h1>Login</h1>
+    <div className="w-full  md:justify-end flex justify-center align-middle items-center h-full p-3">
+      <div className="w-full md:w-1/2 lg:w-1/3 flex flex-col justify-baseline gap-5 bg-white/20 border-2 border-white/80 rounded items-center p-4 h-fit">
+      <h1 className="">Login</h1>
       <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-        <label htmlFor="email">email</label><input type="email" name="email" value={userData.email} onChange={handleChange} placeholder="email" required></input>
-        <label htmlFor="password">password</label><input type="password" name="password" value={userData.password} onChange={handleChange} placeholder="password" required></input>
-        <button>submit</button>
+        <label htmlFor="email">Email: </label><input id="email" type="email" name="email" value={userData.email} onChange={handleChange} placeholder="email" className="border-2 border-white/80 rounded p-2" required></input>
+        <label htmlFor="password">Password: </label><input id="password" type="password" name="password" value={userData.password} onChange={handleChange} placeholder="password" className="border-2 border-white/80 rounded p-2" required></input>
+        <div className="w-full flex justify-center"><button className="bg-green-600 hover:bg-green-500 rounded w-1/3 p-2">Log in</button></div>
       </form>
+      <div className="w-full flex justify-end text-blue-700"><Link to="/register">register</Link></div>
+    </div>
     </div>
   )
 }

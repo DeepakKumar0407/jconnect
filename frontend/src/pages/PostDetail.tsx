@@ -19,7 +19,12 @@ const PostDetail = () => {
   queryKey: ['post',id],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/posts/${id}`,
+      `http://localhost:3000/posts/${id}`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },
@@ -28,7 +33,12 @@ const PostDetail = () => {
   queryKey: ['likeStatus',post],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/posts/${post?._id}/like`,
+      `http://localhost:3000/posts/${post?._id}/like`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

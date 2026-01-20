@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-const ProtectedRoutes = ({children}:{children:any}) => {
+const ProtectedRoutes = ({children}:{children:React.ReactNode}) => {
     const jwt = localStorage.getItem('jwt_token')
   return (
     jwt?(children):(

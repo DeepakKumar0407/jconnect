@@ -7,7 +7,12 @@ const PostByUser = ({user}:{user:iUser|undefined}) => {
   queryKey: ['posts'],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/posts/${user?._id}/user`,
+      `http://localhost:3000/posts/${user?._id}/user`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

@@ -14,7 +14,12 @@ const Profile = () => {
   queryKey: ['user',id],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${id}/id`,
+      `http://localhost:3000/users/${id}/id`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },
@@ -23,7 +28,12 @@ const Profile = () => {
   queryKey: ['userCurrent',currentUserEmail],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${currentUserEmail}/email`,
+      `http://localhost:3000/users/${currentUserEmail}/email`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },

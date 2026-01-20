@@ -10,7 +10,12 @@ const FriendsList = () => {
   queryKey: ['user',email],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${email}/email`,
+      `http://localhost:3000/users/${email}/email`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },
@@ -19,7 +24,12 @@ const FriendsList = () => {
   queryKey: ['friends'],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/friends`,
+      `http://localhost:3000/users/friends`,{
+        method:'GET',
+        headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
+      }
     )
     return await response.json()
   },
