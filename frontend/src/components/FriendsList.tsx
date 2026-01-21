@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import UserSprite from "./UserSprite"
-import type { iUser } from "./interfaces"
+import type { iUser, JWTStructure } from "./interfaces"
 import { useQuery } from "@tanstack/react-query"
+import { jwtDecode } from "jwt-decode"
 
 const FriendsList = () => {
-  const email = "deepak.kumar016211@gmail.com"//jwt
+  const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
+  const email = currentUser.userEmail
   const [friends,setFriends] = useState<iUser[]>()
   const { data:user } = useQuery({
   queryKey: ['user',email],
@@ -21,10 +23,10 @@ const FriendsList = () => {
   },
   })
   const { data } = useQuery<iUser[]>({
-  queryKey: ['friends'],
+  queryKey: ['friends',user],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/friends`,{
+      `http://localhost:3000/users/${user?._id}/friends`,{
         method:'GET',
         headers:{
           'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`

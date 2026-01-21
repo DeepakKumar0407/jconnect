@@ -6,6 +6,7 @@ import commentRoutes from "./routes/commentRoutes.js"
 import notificationRoutes from "./routes/notificationRoutes.js"
 import authRoutes from './routes/authRoutes.js'
 import bodyParser from "body-parser"
+import cookieParser from 'cookie-parser'
 import cloudinary from "./cloudinaryConfig.js";
 import 'dotenv/config'
 import cors from "cors";
@@ -13,6 +14,7 @@ import cors from "cors";
 const app = express()
 app.use(express.json())
 app.use(express.text());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended:true}))
 const port = process.env.PORT
 

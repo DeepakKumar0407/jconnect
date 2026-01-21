@@ -50,7 +50,7 @@ const getOnePost= async (req,res)=>{
 const getLike = async(req,res)=>{
     try {
         const postId = req.params.id
-        const email = '9868282600bull@gmail.com'
+        const email = req.user.userEmail
         const user = await UserModel.findOne({email:email},{_id:1})
         const likeStatus = await PostModel.exists({_id:postId,likes:user._id})
         res.status(200).json(likeStatus)
@@ -62,7 +62,7 @@ const getLike = async(req,res)=>{
 
 const createPost=async(req,res)=>{
    try {
-        const email = "8860559380bull1@gmail.com"
+        const email = req.user.userEmail
         const data = req.body
         const {imageContent,videoContent} = req.files
         let imageUrl = null
@@ -141,7 +141,7 @@ const updatePost=async(req,res)=>{
 const updateLike = async(req,res)=>{
     try {
         const postId = req.params.id
-        const email = '9868282600bull@gmail.com'
+        const email = req.user.userEmail
         const user = await UserModel.findOne({email:email},{_id:1})
         const checkLike = await PostModel.exists({_id:postId,likes:user._id})
         if(checkLike===null){

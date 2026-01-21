@@ -36,6 +36,9 @@ const FormPost = ({state}:{state:string}) => {
   const submitPost = async(data:BodyInit)=>{
           await fetch("http://localhost:3000/posts",{
           method:'POST',
+          headers:{
+              'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+          },
           body:data
          })
       }

@@ -1,8 +1,11 @@
+import { jwtDecode } from "jwt-decode"
+import type { JWTStructure } from "../components/interfaces"
 import NotificationStructure from "../components/NotificationStructure"
 import { useQuery } from "@tanstack/react-query"
 
 const Notifications = () => {
-  const email = "deepak.kumar016211@gmail.com"//jwt
+   const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
+   const email = currentUser.userEmail
   const { data:user } = useQuery({
   queryKey: ['user',email],
   queryFn: async () => {

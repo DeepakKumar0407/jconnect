@@ -32,8 +32,9 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
           await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {
-    'Content-Type': 'application/json'
-  },
+      'Content-Type': 'application/json',
+      'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+    },
     body:JSON.stringify(userData)
     })
       }
@@ -50,8 +51,9 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
           await fetch(`http://localhost:3000/users/${userEmail}`,{
       method:'PATCH',
       headers: {
-    'Content-Type': 'text/plain'
-  },
+        'Content-Type': 'text/plain',
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+    },
     body:currentPassword
     })
       }

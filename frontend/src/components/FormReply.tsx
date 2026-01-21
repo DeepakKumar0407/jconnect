@@ -32,6 +32,9 @@ const FormReply = ({postId,parentId,type}:{postId:string|undefined,parentId?:str
     const submitData = async(data:BodyInit)=>{
         await fetch('http://localhost:3000/comments',{
             method:"POST",
+             headers:{
+              'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+            },
             body:data
         })
     }

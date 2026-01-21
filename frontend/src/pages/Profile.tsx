@@ -4,11 +4,14 @@ import PostByUser from "../components/PostByUser"
 import UserProfile from "../components/UserProfile"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+import type { JWTStructure } from "../components/interfaces"
+import { jwtDecode } from "jwt-decode"
 
 const Profile = () => {
   const [yaxis,setYAxis] = useState(window.innerHeight)
   const [selection,setSection] = useState('posts')
-  const currentUserEmail = "deepak.kumar016211@gmail.com"//jwt
+    const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
+    const email = currentUser.userEmail
   const {id} = useParams()
    const { data:user } = useQuery({
   queryKey: ['user',id],
@@ -25,10 +28,10 @@ const Profile = () => {
   },
   })
    const { data:userCurrent } = useQuery({
-  queryKey: ['userCurrent',currentUserEmail],
+  queryKey: ['userCurrent',email],
   queryFn: async () => {
     const response = await fetch(
-      `http://localhost:3000/users/${currentUserEmail}/email`,{
+      `http://localhost:3000/users/${email}/email`,{
         method:'GET',
         headers:{
           'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`

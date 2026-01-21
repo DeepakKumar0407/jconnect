@@ -6,6 +6,14 @@ export interface iNotification {
   id:string
 }
 
+export interface JWTStructure{
+  iat:number;
+  signInTime:number;
+  userId:string;
+  userEmail:string;
+  username:string;
+}
+
 export interface iUser {
   _id?:string;
   name:string;

@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import PostStructure from "../components/PostStructure"
-import type { iPostRecived } from "../components/interfaces"
+import type { iPostRecived, JWTStructure } from "../components/interfaces"
 import { useQuery } from "@tanstack/react-query"
+import { jwtDecode } from "jwt-decode"
 
 const SavedPosts = () => {
-  const userId = "69615b843b9d8533212f8503"
+    const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
+    const userId = currentUser.userId
   const scrollRef = useRef<HTMLDivElement>(null)
   const [yaxis,setYAxis] = useState(window.innerHeight)
   const { data:savedPosts } = useQuery({

@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/',authenticateToken, getAllUser)
 router.get('/:blob/search',authenticateToken,getSearchUsers)
-router.get('/friends',authenticateToken,getAllFriends)
+router.get('/:id/friends',authenticateToken,getAllFriends)
 router.get('/:email/email',authenticateToken,getOneUserByEmail)
 router.get('/:id/id',authenticateToken,getOneUserById)
 router.get('/:id/liked',authenticateToken,getLikedPosts)

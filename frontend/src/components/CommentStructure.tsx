@@ -50,11 +50,17 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
   const updateLike = async ()=>{
     await fetch(`http://localhost:3000/comments/${comment._id}/like`, {
       method: "PATCH",
+      headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
     })
   }
   const deleteLike = async ()=>{
     await fetch(`http://localhost:3000/comments/${comment._id}`, {
       method: "DELETE",
+      headers:{
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+        }
     })
   }
   const {mutate:mutateLikeUpdate} = useMutation({mutationFn:updateLike})

@@ -24,9 +24,9 @@ const getSearchUsers = async (req,res)=>{
 
 const getAllFriends= async (req,res)=>{
     try {
-        const email = "deepak.kumar016211@gmail.com"
-        const followers = await UserModel.findOne({email:email}).populate('followers')
-        const following = await UserModel.findOne({email:email}).populate('following')
+        const id = req.params.id
+        const followers = await UserModel.findOne({_id:id}).populate('followers')
+        const following = await UserModel.findOne({_id:id}).populate('following')
         res.status(200).json([...followers.followers,...following.following])
     } catch (error) {
         console.log(error)
@@ -116,8 +116,9 @@ const updateUser=async(req,res)=>{
 const updateFollowers = async(req,res)=>{
    try {
         const flag = req.params.flag
-        const userEmail = "deepak.kumar016211@gmail.com"
+        const userEmail = req.user.userEmail
         const toFollowId = req.body
+        console.log(userEmail,toFollowId)
         const followingUserId = await UserModel.findOne({email:userEmail},{_id:1})
        if(flag==="follow"){
         const followingUser = await UserModel.findOneAndUpdate({email:userEmail},{$addToSet:{following:toFollowId}})
@@ -137,7 +138,7 @@ const updateFollowers = async(req,res)=>{
 const updateSavedStatus = async(req,res)=>{
     try {
         const postId = req.params.id
-        const email = "deepak.kumar016211@gmail.com"
+        const email = req.user.userEmail
         const isSaved = await UserModel.exists({email:email,savedPosts:postId})
         if(isSaved===null){
         await UserModel.findOneAndUpdate({email:email},{$addToSet:{savedPosts:postId}})

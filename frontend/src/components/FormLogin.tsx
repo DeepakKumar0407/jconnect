@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { iLogin } from "./interfaces";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FormLogin = () => {
+  const navigate = useNavigate()
   const initialData:iLogin = {
     email:"",
     password:""
@@ -28,8 +29,10 @@ const FormLogin = () => {
     if(!res.ok){
       console.log('login failed')
     }
-    if(token.length>0)
+    if(token.length>0){
     localStorage.setItem('jwt_token',token)
+    navigate('/home')
+    }
    
   }
   return (

@@ -16,6 +16,9 @@ const FormCommentUpdate = ({postId,parentId,comm}:{postId:string,parentId?:strin
      const submitData = async(data:BodyInit)=>{
         await fetch(`http://localhost:3000/comments/${comment._id}`,{
             method:"POST",
+            headers:{
+                'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+            },
             body:data
         })
     }

@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:string|null,type:string}) => {
-    
     const id = type
     const initialData:iComment = {
         textContent:"",
@@ -32,6 +31,9 @@ const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:s
     const submitData = async(data:BodyInit)=>{
         await fetch('http://localhost:3000/comments',{
             method:"POST",
+            headers:{
+                'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+            },
             body:data
         })
     }

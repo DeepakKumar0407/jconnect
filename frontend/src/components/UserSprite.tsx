@@ -6,14 +6,15 @@ const submitFollow = async(id:string|undefined)=>{
           await fetch('http://localhost:3000/users/follow/follow',{
       method:"PATCH",
       headers:{
-        "Content-Type":"text/plain"
+        "Content-Type":"text/plain",
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
       },
       body:id
     })
       }
   const {mutate:mutateFollow,error:followError} = useMutation({mutationFn:submitFollow})
     const handleFollow = async()=>{
-    mutateFollow(user?._id)
+    mutateFollow(friend?._id)
     if(followError){
       console.log('something went wrong')
     } 
@@ -22,14 +23,15 @@ const submitFollow = async(id:string|undefined)=>{
           await fetch('http://localhost:3000/users/unfollow/follow',{
       method:"PATCH",
       headers:{
-        "Content-Type":"text/plain"
+        "Content-Type":"text/plain",
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
       },
       body:id
     })
       }
   const {mutate:mutateUnFollow,error:unFollowError} = useMutation({mutationFn:submitUnFollow})
   const handleUnFollow= async()=>{
-    mutateUnFollow(user?._id)
+    mutateUnFollow(friend?._id)
     if(unFollowError){
       console.log('something went wrong')
     }  

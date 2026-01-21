@@ -16,7 +16,7 @@ const Home = () => {
       'http://localhost:3000/posts',{
         method:'GET',
         headers:{
-          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
+          'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`,
         }
       }
     )

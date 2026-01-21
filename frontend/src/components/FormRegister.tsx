@@ -26,7 +26,8 @@ const FormRegister = () => {
           await fetch('http://localhost:3000/users',{
         method:'POST',
         headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
   },
     body:JSON.stringify(userData)
     })

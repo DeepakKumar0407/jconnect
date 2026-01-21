@@ -21,11 +21,10 @@ const loginUser= async(req,res)=>{
             userEmail:user.email
         }
         const token = jwt.sign(userStructure,jwt_secret)
-        console.log(token)
         res.status(200).json(token)
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(401).json(error)
     }
 }
 

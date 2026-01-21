@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import type { iUser } from "./interfaces"
+import type { iUser, JWTStructure } from "./interfaces"
 import { HomeIcon } from "@heroicons/react/24/solid"
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/solid"
 import { UserCircleIcon } from "@heroicons/react/24/solid"
@@ -8,9 +8,11 @@ import { BellAlertIcon } from "@heroicons/react/24/solid"
 import { Cog8ToothIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/solid"
 import { useQuery } from "@tanstack/react-query"
+import { jwtDecode } from "jwt-decode"
 
 const Navbar = () => {
-  const email = "deepak.kumar016211@gmail.com" //jwt
+   const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
+   const email = currentUser.userEmail
   const { data:user } = useQuery<iUser>({
   queryKey: ['user',email],
   queryFn: async () => {
