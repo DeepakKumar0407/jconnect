@@ -18,7 +18,7 @@ import ReplyPage from "./pages/ReplyPage";
 
 
 const router = createBrowserRouter([
-  {path:"/login",element:<Login/>},
+  {path:"/",element:<Login/>},
   {path:"/register",element:<Registration/>},
   {
     element: <Layout />,

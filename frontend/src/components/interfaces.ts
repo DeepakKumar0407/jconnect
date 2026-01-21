@@ -3,7 +3,9 @@ export interface iNotification {
   _id:string;
   type:string;
   userId:string;
-  id:string
+  postId:string;
+  notifOnid:string;
+  notifContent:string;
 }
 
 export interface JWTStructure{

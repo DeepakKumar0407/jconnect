@@ -59,18 +59,27 @@ const PostDetail = () => {
  
      const handleLikeClick = async()=>{
     await fetch(`http://localhost:3000/posts/${post?._id}/like`,{
-      method:'PATCH'
+      method:'PATCH',
+      headers:{
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`,
+      }
     })
     setLikeStatus(!likeStatus)
   }
   const handleSaveClick = async()=>{
     await fetch(`http://localhost:3000/users/${post?._id}/save`,{
-      method:'PATCH'
+      method:'PATCH',
+       headers:{
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`,
+      }
     })
   }
   const handleDelete = async()=>{
     await fetch(`http://localhost:3000/posts/${post?._id}`,{
-      method:"DELETE"
+      method:"DELETE",
+       headers:{
+        'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`,
+      }
     })
   }
   const handleBack = ()=>{

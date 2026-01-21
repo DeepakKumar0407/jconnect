@@ -11,7 +11,7 @@ const Setting = () => {
   const email = currentUser.userEmail
   const handleLogout = ()=>{
     localStorage.removeItem('jwt_token')
-    navigate('/login')
+    navigate('/')
   }
   return (
     <div className="div">

@@ -41,8 +41,6 @@ const Navbar = () => {
         <Link to="chat_room" className="flex gap-2 items-center"><ChatBubbleLeftEllipsisIcon className="icon"/> Chat Room</Link>
         <Link to={`profile/${user?._id}`} className="flex gap-2 items-center"><UserCircleIcon className="icon"/> Profile</Link>
         <Link to="saved" className="flex gap-2 items-center"><BookmarkSquareIcon className="icon" /> Saved Posts</Link>
-        <Link to="/" className="flex gap-2 items-center">Login</Link>
-        <Link to="register" className="flex gap-2 items-center">Register</Link>
         <hr></hr>
         <Link to="notifications" className="flex gap-2 items-center"><BellAlertIcon className="icon"/> Notifications</Link>
         <Link to="settings" className="flex gap-2 items-center"><Cog8ToothIcon className="icon"/> Settings</Link>
