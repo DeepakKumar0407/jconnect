@@ -21,7 +21,9 @@ const FriendsList = () => {
     )
     return await response.json()
   },
+  enabled: email.length>0
   })
+  const hasUSer = typeof(user) === 'object'
   const { data } = useQuery<iUser[]>({
   queryKey: ['friends',user],
   queryFn: async () => {
@@ -34,7 +36,7 @@ const FriendsList = () => {
       }
     )
     return await response.json()
-  },
+  },enabled:hasUSer
   })
   useEffect(()=>{
     const getFriends = async()=>{

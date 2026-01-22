@@ -19,13 +19,13 @@ export interface JWTStructure{
 export interface iUser {
   _id?:string;
   name:string;
-  profilePic?:string;
+  profilePic?:File|null;
   userName:string;
   email:string;
   phone:string;
   dob:string;
   bio?:string;
-  password:string;
+  password?:string;
   followers?:string[];
   following?:string[];
 }

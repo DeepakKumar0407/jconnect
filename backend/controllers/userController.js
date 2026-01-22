@@ -1,5 +1,7 @@
 import { UserModel } from "../models/user.model.js"
 import bcrypt from 'bcrypt'
+import {v2 as cloudinary} from 'cloudinary'
+import streamifier from "streamifier";
 
 const getAllUser= async (req,res)=>{
     try {
@@ -92,24 +94,49 @@ const createUser=async(req,res)=>{
    }
 }
 
-const updateUser=async(req,res)=>{
+const comparePassword = async(req,res)=>{
     try {
-        const id = req.params.id
+        const id = req.user.userId
         const data = req.body
-        if(typeof(data)==='string'){
-        const user = await UserModel.findOne({email:id},{password:1})
+        const user = await UserModel.findOne({_id:id},{password:1})
         const isPassword = await bcrypt.compare(data,user.password)
         if(!isPassword){
             throw new Error('invalid password')
         }
         res.status(200).json("success")
-        }else{
-        const user = await UserModel.updateOne({email:id},data)
-        res.status(200).json("success")
-        }
     } catch (error) {
         console.log(error)
-        res.status(500).json(error)
+        res.status(401).json(error)
+    }
+}
+
+const updateUser=async(req,res)=>{
+    try {
+        const id = req.params.id
+        const data = req.body
+        const profilePic = req.file
+        console.log(typeof(data),data)
+        let imageUrl = null
+        if(profilePic){
+            imageUrl = await new Promise((resolve,reject)=>{
+                const stream = cloudinary.uploader.upload_stream(({folder:"profile",resource_type:"image"}),(error,result)=>{
+                    if(error) reject(error)
+                    if(!result.secure_url) return reject(new Error("No URL"))
+                    resolve(result.secure_url)
+                })
+                streamifier.createReadStream(profilePic.buffer).pipe(stream)
+            })
+            data.profilePic = imageUrl
+        }
+        if(typeof(data)==='string'){
+            const user = await UserModel.updateOne({email:id},{password:data})
+        }else{
+        const user = await UserModel.updateOne({email:id},data)
+        }
+        res.status(200).json("success")
+    } catch (error) {
+        console.log(error)
+        res.status(401).json(error)
     }
 }
 
@@ -164,4 +191,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,getLikedPosts,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}
+export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,comparePassword,getLikedPosts,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}
