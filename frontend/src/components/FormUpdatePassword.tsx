@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 
-const FormUpdatePassword = ({userEmail}:{userEmail:string}) => {
+const FormUpdatePassword = ({userEmail,state}:{userEmail:string,state:boolean}) => {
     const [currentPassword,setCurrentPassword] =useState("")
       const [validatePassword,setValidatePassword] = useState(false)
       const [userPassword,setUserPassword] = useState<string>("")
@@ -68,19 +68,21 @@ const FormUpdatePassword = ({userEmail}:{userEmail:string}) => {
   }
   return (
     <div className="w-full">
-        <div>
-            <h1>Update Password</h1>
+      {state?(
+          <div>
+            <p className="text-xl lg:text-2xl mb-2">Update password</p>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handlePasswordSubmit}>
-            <label htmlFor="password">Current Password</label><input type="password" name="password" value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} placeholder="password" required></input>
-            <button>Submit</button>
+            <label htmlFor="password">Current Password</label><input type="password" name="password" value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} placeholder="password" className="border-2 border-white/50 rounded p-2 md:w-1/3" required></input>
+            <button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Validate</button>
             </form>
             {validatePassword&&
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            <label htmlFor="password">New Password</label><input type="password" name="password" onChange={(e)=>setUserPassword(e.target.value)} placeholder="password" required></input>
-            <button>Submit</button>
+            <label htmlFor="password">New Password</label><input type="password" name="password" onChange={(e)=>setUserPassword(e.target.value)} placeholder="password" className="border-2 border-white/50 rounded p-2 md:w-1/3" required></input>
+            <button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Update</button>
             </form>
             }
         </div>
+      ):("")}
         </div>
   )
 }

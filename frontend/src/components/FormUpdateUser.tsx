@@ -9,7 +9,6 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
     email:"",
     phone: "",
     dob:"",
-    profilePic:null,
     bio:''
   }
   const [userData,setUserData] = useState<iUser>(initialData)
@@ -24,7 +23,7 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
         }
       )
       const data = await res.json()
-      setUserData(state=>({...state,name:data.name,userName:data.userName,profilePic:data.profilePic,dob:data.dob,email:data.email,bio:data.bio,phone:data.phone}))
+      setUserData(state=>({...state,name:data.name,userName:data.userName,dob:data.dob,email:data.email,bio:data.bio,phone:data.phone}))
     }
     getUserData()
   },[userEmail])
@@ -61,45 +60,46 @@ const FormUpdateUser = ({field,userEmail}:{field:string,userEmail:string}) => {
   return (
    field===""?(''):(
      <div className="w-full">
-    {field==='profile'&&
+    {field==='profile pic'&&
         <div>
-            <h1>Update {field}</h1>
+            <p className="md:text-xl lg:text-2xl mb-2">Update {field}</p>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            <div><label htmlFor="profilePic">Profile pic</label><input type="file" name="profilePic" onChange={(e)=>setUserData(state=>({...state,profilePic:e.target.files?.[0]||null}))} required></input></div>
-            <button>Submit</button>
+            <div><label htmlFor="profilePic">Profile pic: Select<input id="profilePic" type="file" name="profilePic" onChange={(e)=>setUserData(state=>({...state,profilePic:e.target.files?.[0]||null}))} className="hidden" required></input></label></div>
+            <div className="flex justify-baseline"><button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Update</button></div>
             </form>
+            <div>{userData.profilePic&&userData.profilePic!==null&&<img src={URL.createObjectURL(userData.profilePic)} className="w-1/2"></img>}</div>
         </div>
 }
 {field==='name'&&
         <div>
-            <h1>Update {field}</h1>
+            <p className="md:text-xl lg:text-2xl mb-2">Update {field}</p>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            <div><label htmlFor="name">name</label><input type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" required></input></div>
-            <button>Submit</button>
+            <div><label htmlFor="name">Name: </label><input id="name" type="text" name="name" value={userData.name} onChange={handleChange} placeholder="name" className="border-2 border-white/50 rounded p-2" required></input></div>
+            <div className="flex justify-baseline"><button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Update</button></div>
             </form>
         </div>
 }{field==='dob'&&
         <div>
-            <h1>Update {field}</h1>
+            <p className="md:text-xl mb-2">Update {field}</p>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            <div><label htmlFor="dob">dob</label><input type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" required></input></div>
-            <button>Submit</button>
+            <div><label htmlFor="dob">Dob: <input id="dob" type="date" name="dob" value={userData.dob} onChange={handleChange} placeholder="dob" required></input></label></div>
+            <div className="flex justify-baseline"><button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Update</button></div>
             </form>
         </div>
 }{field==='phone'&&
         <div>
-            <h1>Update {field}</h1>
+            <p className="md:text-xl mb-2">Update {field}</p>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            <div><label htmlFor="phone">Phone</label><input type="tel" name="phone" value={userData.phone} onChange={handleChange} placeholder="phone" required></input></div>
-            <button>Submit</button>
+            <div><label htmlFor="phone">Phone: </label><input id="phone" type="tel" name="phone" value={userData.phone} onChange={handleChange} placeholder="phone" className="border-2 border-white/50 rounded p-2" required></input></div>
+            <div className="flex justify-baseline"><button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Update</button></div>
             </form>
         </div>
 }{field==='bio'&&
         <div>
-            <h1>Update {field}</h1>
+            <p className="md:text-xl mb-2">Update {field}</p>
             <form className="w-full flex flex-col justify-baseline gap-4" onSubmit={handleSubmit}>
-            <div><label htmlFor="bio">Bio</label><textarea name="bio" onChange={handleChange} value={userData.bio} placeholder="type something" required></textarea></div>
-            <button>Submit</button>
+            <div><label htmlFor="bio"></label><textarea id="bio" name="bio" onChange={handleChange} value={userData.bio} placeholder="type something" className="border-2 border-white/50 rounded p-2" rows={5} cols={25} required></textarea></div>
+            <div className="flex justify-baseline"><button className="w-1/2 md:w-1/4 bg-green-600 hover:bg-green-500 p-2 rounded">Update</button></div>
             </form>
         </div>
 }
