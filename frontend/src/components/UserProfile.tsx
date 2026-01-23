@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 import type { iUser } from "./interfaces"
+import { Link } from "react-router-dom"
 
 const UserProfile = ({user,userCurrent}:{user:iUser|undefined,userCurrent:iUser|undefined}) => {
     const submitFollow = async(id:string|undefined)=>{
@@ -52,8 +53,11 @@ const UserProfile = ({user,userCurrent}:{user:iUser|undefined,userCurrent:iUser|
       <div className="">
       {user?._id&& userCurrent?.following?.includes(user._id)?(<button onClick={handleUnFollow}>Unfollow</button>)
       :(<button onClick={handleFollow}>Follow</button>)}
-      </div>
-    }
+      </div>}
+      {userCurrent?.email!==user?.email&&
+      <div>
+        <Link to={`/chat_room/${user?._id}`}>Chat</Link>
+      </div>}
     </div>
   )
 }

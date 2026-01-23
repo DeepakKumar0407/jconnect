@@ -6,6 +6,9 @@ import postRoutes from "./routes/postRoutes.js"
 import commentRoutes from "./routes/commentRoutes.js"
 import notificationRoutes from "./routes/notificationRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
+import chatRoutes from "./routes/chatRoutes.js"
+import roomRoutes from "./routes/roomRoutes.js"
+import { ChatModel } from "./models/chat.model.js"
 import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
 import cloudinary from "./cloudinaryConfig.js"
@@ -22,14 +25,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const port = process.env.PORT
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5174","http://localhost:5173"],
     credentials: true
   },
   connectionStateRecovery: {}
 })
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5174","http://localhost:5173"],
   credentials: true
 }))
 
@@ -48,8 +51,9 @@ await ConnectDb()
 
 io.on("connection", (socket) => {
   console.log("user connected")
-  socket.on("chat message", (msg) => {
+  socket.on("chat message", async (msg) => {
     io.emit("chat message", msg)
+    await ChatModel.create(msg)
   })
   socket.on("disconnect", () => {
     console.log("user disconnected")
@@ -61,6 +65,8 @@ app.use("/posts", postRoutes)
 app.use("/comments", commentRoutes)
 app.use("/notifications", notificationRoutes)
 app.use("/auth", authRoutes)
+app.use("/chats", chatRoutes)
+app.use("/rooms", roomRoutes)
 
 server.listen(port, () => {
   console.log(`listining at port ${port}`)

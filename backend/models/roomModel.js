@@ -1,0 +1,18 @@
+import mongoose,{Schema} from 'mongoose'
+
+const RoomSchema = new Schema({
+    senderId:{
+        type:Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
+    reciverId:{
+        type:Schema.Types.ObjectId,
+        ref:'User',
+        required:true
+    },
+},{timestamps:true})
+
+RoomSchema.index({senderId:1})
+
+export const RoomModel = mongoose.model('Room',RoomSchema)

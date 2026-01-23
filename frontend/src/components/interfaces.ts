@@ -8,6 +8,15 @@ export interface iNotification {
   notifContent:string;
 }
 
+export interface iChat {
+  text:string;
+  senderId:string;
+}
+export interface iRoom {
+  senderId:string;
+  reciverId:string;
+}
+
 export interface JWTStructure{
   iat:number;
   signInTime:number;
