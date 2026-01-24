@@ -14,27 +14,36 @@ h1{
   @apply w-full
 }
 .div{
-@apply p-5 md:w-3/5 w-full
+@apply p-5 md:w-3/5 w-4/5
 }
 .icon {
   @apply w-5 h-5 lg:w-7 lg:h-7 inline
-}
-    
-
-::-webkit-scrollbar {
-  width: 5px;
 }
 
 ::-webkit-calendar-picker-indicator {
     filter: invert(1);
 }
 
-/* Track */
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
+}
+
+.chat::-webkit-scrollbar {
+  width: 0px;
+}
+
+.chat::-webkit-scrollbar-track {
+}
+
+.chat::-webkit-scrollbar-thumb {
+
 }

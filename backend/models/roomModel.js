@@ -6,7 +6,7 @@ const RoomSchema = new Schema({
         ref:'User',
         required:true
     },
-    reciverId:{
+    receiverId:{
         type:Schema.Types.ObjectId,
         ref:'User',
         required:true
@@ -14,5 +14,6 @@ const RoomSchema = new Schema({
 },{timestamps:true})
 
 RoomSchema.index({senderId:1})
+RoomSchema.index({senderId:1,receiverId:1},{unique:1})
 
 export const RoomModel = mongoose.model('Room',RoomSchema)

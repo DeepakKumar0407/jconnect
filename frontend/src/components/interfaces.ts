@@ -14,7 +14,7 @@ export interface iChat {
 }
 export interface iRoom {
   senderId:string;
-  reciverId:string;
+  receiverId:string;
 }
 
 export interface JWTStructure{

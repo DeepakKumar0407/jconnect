@@ -8,38 +8,41 @@ import { useParams } from "react-router-dom"
 
 const ChatRoom = () => {
   const socketRef = useRef<Socket | null>(null)
+  const chatRef = useRef<HTMLDivElement>(null)
   const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
   const senderId = currentUser.userId
-  const {id:reciverId} = useParams()
+  const {id:receiverId} = useParams()
+  const [roomId,setRoomID] = useState<string>('')
   const [yaxis, setYAxis] = useState(window.innerHeight)
   const [chat, setChat] = useState<iChat[]>([])
   const [message, setMessage] = useState('')
   const createRoom = async(data:iRoom)=>{
-          await fetch("http://localhost:3000/rooms",{
+          const response = await fetch("http://localhost:3000/rooms",{
           method:'POST',
           headers:{
               'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`
           },
           body:JSON.stringify(data)
          })
+         return response.json()
       }
-      const {mutate} = useMutation({mutationFn:createRoom})
+      const {mutate} = useMutation({mutationFn:createRoom,onSuccess:(data)=>{setRoomID(data?._id)}})
       useEffect(()=>{
-        if(senderId!==undefined && reciverId!==undefined){
-        mutate({senderId:senderId,reciverId:reciverId})
+        if(senderId!==undefined && receiverId!==undefined){
+        mutate({senderId:senderId,receiverId:receiverId})
         }
       },[])
   const {data:chats} = useQuery({
-    queryKey:['chats',senderId],
+    queryKey:['chats',roomId],
     queryFn: async()=>{
-      const response = await fetch(`http://localhost:3000/chats/${senderId}`)
+      const response = await fetch(`http://localhost:3000/chats/${roomId}`)
       return await response.json()
     }
   })
   useEffect(()=>{
     const syncChats = ()=>{
-      if(chats!==undefined){
-      setChat(state=>([...state,...chats]))
+      if(Array.isArray(chats)){
+      setChat(chats)
       }
     }
     syncChats()
@@ -59,7 +62,7 @@ const ChatRoom = () => {
   }, [])
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    socketRef.current?.emit('chat message', {senderId:senderId,text:message})
+    socketRef.current?.emit('chat message', {roomId:roomId,senderId:senderId,receiverId:receiverId,text:message})
     setMessage('')
   }
   useEffect(() => {
@@ -73,13 +76,20 @@ const ChatRoom = () => {
     return () => {
       socket.disconnect()
     }
-  }, [])
-  console.log(chats)
+  },[])
+  useEffect(() => {
+  if (!chatRef.current) return;
+  chatRef.current.scrollTop = chatRef.current.scrollHeight;
+}, [chat]);
   return (
-    <div className="div" style={{ height: `${yaxis}px` }}>
+    <div className="div overflow-y-auto" style={{ height: `${yaxis}px` }}>
       <div className="flex flex-col justify-between pb-22 h-full">
-        <div className="overflow-auto w-full">{chat?.map((m, index: number) => (
-        <p key={index}>{m.text}</p>
+        <div ref={chatRef} className="overflow-auto h-full w-full chat mb-5">
+        {chat?.map((m, index: number) => (
+        <div key={index} className=" w-full flex justify-between lg:text-xl">
+        <div className="w-1/2 flex justify-baseline overflow-clip">{m.senderId!==senderId&&<p className="p-2 rounded bg-white/20 mb-4 w-fit ">{m.text}</p>}</div>
+        <div className="w-1/2 flex justify-end overflow-clip">{m.senderId===senderId&&<p className="p-2 rounded bg-white/20 mb-4 w-fit ">{m.text}</p>}</div>
+        </div>
       ))}
       </div>
       <form onSubmit={handleSubmit} className="w-full">
