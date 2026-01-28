@@ -15,6 +15,8 @@ import Post from "./pages/Post";
 import Layout from "./Layout";
 import './App.css'
 import ReplyPage from "./pages/ReplyPage";
+import PageNotFound from "./components/PageNotFound";
+import ChatRoomList from "./pages/ChatRoomList";
 
 
 const router = createBrowserRouter([
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: "/about", element: <About /> },
+      { path: "/chat_room_list", element: <ChatRoomList /> },
       { path: "/chat_room/:id", element: <ChatRoom /> },
       { path: "/home", element: <Home /> },
       { path: "/post_details/:id", element: <PostDetail />,children:[{path: "/post_details/:id/reply/:postId/:parentId", element: <ReplyPage />}] },
@@ -33,6 +36,7 @@ const router = createBrowserRouter([
       { path: "/settings", element: <Setting /> },
       { path: "/notifications", element: <Notifications /> },
       { path: "/post", element: <Post /> },
+      { path: "*", element: <PageNotFound /> },
     ],
   },
 ]);

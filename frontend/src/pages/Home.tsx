@@ -4,11 +4,12 @@ import PostStructure from "../components/PostStructure"
 import type { iPostRecived } from "../components/interfaces"
 import { useQuery } from "@tanstack/react-query"
 import { PlusIcon } from "@heroicons/react/24/outline"
+import FormSearch from "../components/FormSearch"
 
 const Home = () => {
   const [yaxis,setYAxis] = useState(window.innerHeight)
-  const [state,setState] = useState<string>("hidden")
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [state,setState] = useState<string>("hidden")
   const { isPending,data,error } = useQuery({
   queryKey: ['post'],
   queryFn: async () => {
@@ -59,13 +60,22 @@ useEffect(() => {
 
   return () => window.removeEventListener("resize", updateHeight)
 }, [])
-  if (isPending) return 'Loading...'
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
 
-  if (error) return 'An error has occurred: ' + error.message
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className={`div overflow-auto`} ref={scrollRef} style={{height:`${yaxis}px`}}>
-      <div className="flex justify-between mr-10 mb-5 ">
-        <h1>For You</h1>
+      <div className="flex justify-between mr-10 mb-5">
+        <h1 className="hidden md:inline">For You</h1>
+        <div><FormSearch/></div>
         <button className="lg:text-2xl flex align-middle gap-2 cursor-pointer" onClick={handleClick}>Post <PlusIcon className="icon"/></button>
       </div>
       <FormPost state={state}/>

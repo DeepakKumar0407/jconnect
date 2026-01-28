@@ -9,6 +9,7 @@ export interface iNotification {
 }
 
 export interface iChat {
+  _id:string;
   text:string;
   senderId:string;
 }

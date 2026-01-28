@@ -13,7 +13,7 @@ const Profile = () => {
     const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
     const email = currentUser.userEmail
   const {id} = useParams()
-   const { data:user } = useQuery({
+   const { data:user,isPending:userPending,error:userError } = useQuery({
   queryKey: ['user',id],
   queryFn: async () => {
     const response = await fetch(
@@ -27,7 +27,7 @@ const Profile = () => {
     return await response.json()
   },
   })
-   const { data:userCurrent } = useQuery({
+   const { data:userCurrent,isPending,error } = useQuery({
   queryKey: ['userCurrent',email],
   queryFn: async () => {
     const response = await fetch(
@@ -49,6 +49,18 @@ const Profile = () => {
   
     return () => window.removeEventListener("resize", updateHeight)
   }, [])
+    if (isPending||userPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error||userError) return (
+    <div className="div">
+      {error&&<h1>An error has occurred: {error.message}</h1>}
+      {userError&&<h1>An error has occurred: {userError.message}</h1>}
+    </div>
+  )
   return (
     <div className="div overflow-auto p-2" style={{height:`${yaxis}px`}}>
      <div className="w-full">

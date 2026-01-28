@@ -50,13 +50,13 @@ const UserProfile = ({user,userCurrent}:{user:iUser|undefined,userCurrent:iUser|
         <p className="lg:text-xl mb-3">{user?.bio}</p>
       </div>
       {userCurrent?.email!==user?.email&&
-      <div className="">
-      {user?._id&& userCurrent?.following?.includes(user._id)?(<button onClick={handleUnFollow}>Unfollow</button>)
-      :(<button onClick={handleFollow}>Follow</button>)}
+      <div className="ml-5">
+      {user?._id&& userCurrent?.following?.includes(user._id)?(<button onClick={handleUnFollow} className="p-2 bg-red-600 hover:bg-red-500 cursor-pointer rounded">Unfollow</button>)
+      :(<button onClick={handleFollow} className="p-2 bg-green-600 hover:bg-green-500 cursor-pointer rounded">Follow</button>)}
       </div>}
       {userCurrent?.email!==user?.email&&
-      <div>
-        <Link to={`/chat_room/${user?._id}`}>Chat</Link>
+      <div className="ml-5 mb-5">
+        <Link to={`/chat_room/${user?._id}`} className="p-2 bg-blue-600 hover:bg-blue-500 cursor-pointer rounded w-fit">Chat</Link>
       </div>}
     </div>
   )

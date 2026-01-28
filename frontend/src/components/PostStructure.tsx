@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 
 
 const PostStructure = ({post}:{post:iPostRecived}) => {
-  const {data:user} = useQuery({
+  const {data:user,isPending,error} = useQuery({
     queryKey:['user',post.userId],
     queryFn: async ()=>{
       const response = await fetch(`http://localhost:3000/users/${post.userId}/id`,
@@ -19,6 +19,17 @@ const PostStructure = ({post}:{post:iPostRecived}) => {
       return await response.json()
     }
   })
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className="w-full">
       <Link to={`/profile/${post?.userId}`}>

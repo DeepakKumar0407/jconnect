@@ -18,9 +18,17 @@ const CommentByUser = ({user}:{user:iUser|undefined}) => {
     return await response.json()
   },
   })
-  if (isPending) return 'Loading...'
+ if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
 
-  if (error) return 'An error has occurred: ' + error.message
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className="w-full flex flex-col gap-3 justify-baseline ml-5 mt-3 mb-22">
       {data?.map((comment:iCommentRecived)=>(

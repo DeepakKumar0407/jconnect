@@ -3,7 +3,7 @@ import type { iPostRecived, iUser } from "./interfaces"
 import { useQuery } from "@tanstack/react-query"
 
 const PostByUser = ({user}:{user:iUser|undefined}) => {
-  const { data:posts} = useQuery<iPostRecived[]>({
+  const { data:posts,isPending,error} = useQuery<iPostRecived[]>({
   queryKey: ['posts'],
   queryFn: async () => {
     const response = await fetch(
@@ -17,6 +17,17 @@ const PostByUser = ({user}:{user:iUser|undefined}) => {
     return await response.json()
   },
   })
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className="w-full ml-5 mb-22 ">
         {posts?.map((post:iPostRecived)=>(

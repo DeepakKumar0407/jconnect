@@ -8,14 +8,18 @@ import { HeartIcon } from "@heroicons/react/24/solid"
 import { BookmarkSquareIcon } from "@heroicons/react/24/solid"
 import { TrashIcon } from "@heroicons/react/24/outline"
 import { useQuery } from "@tanstack/react-query"
+import { jwtDecode } from "jwt-decode"
+import type { JWTStructure } from "../components/interfaces"
 
 const PostDetail = () => {
   const {id}= useParams()
+  const token:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)
+  const currentUserId = token.userId
   const [likeStatus,setLikeStatus] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [yaxis,setYAxis] = useState(window.innerHeight)
   const navigate = useNavigate()
-  const { data:post } = useQuery({
+  const { data:post,isPending,error } = useQuery({
   queryKey: ['post',id],
   queryFn: async () => {
     const response = await fetch(
@@ -120,7 +124,18 @@ useEffect(() => {
   window.addEventListener("resize", updateHeight)
 
   return () => window.removeEventListener("resize", updateHeight)
-}, []) 
+}, [])
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  ) 
   return (
     <div className={`div overflow-auto`} ref={scrollRef} style={{height:`${yaxis}px`}}>
       <div className=" w-full flex flex-col justify-baseline">
@@ -133,7 +148,7 @@ useEffect(() => {
         (<p className="bg-white text-black w-10 h-10 lg:w-15 lg:h-15 flex rounded-full justify-center items-center md:text-xl">{post?.userName[0].toUpperCase()}</p>)}
         <p className="w-1/2 lg:text-xl">@{post?.userName}</p>
         </Link>
-        <button onClick={handleDelete}><TrashIcon className="icon text-red-600 cursor-pointer"/></button>
+        {post.userId===currentUserId&&<button onClick={handleDelete}><TrashIcon className="icon text-red-600 cursor-pointer"/></button>}
       </div>
       <p className="mt-2 lg:text-2xl mb-2">{post?.textContent}</p>
       {post?.imageContent!=="null"&&<img src={post?.imageContent}></img>}

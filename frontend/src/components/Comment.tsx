@@ -46,9 +46,17 @@ const commentTree = useMemo(() => {
   if (!data?.length) return [];
   return buildCommentTree(data);
 }, [data]);
-  if (isPending) return 'Loading...'
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
 
-  if (error) return 'An error has occurred: ' + error.message
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className="flex flex-col gap-10 mb-22">
     {commentTree?.map((child:CommentNode)=>(

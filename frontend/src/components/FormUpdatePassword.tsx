@@ -20,7 +20,7 @@ const FormUpdatePassword = ({userEmail,state}:{userEmail:string,state:boolean}) 
           }
           getUserData()
         },[userEmail])
-         const submitPassword = async(currentPassword:BodyInit)=>{
+      const submitPassword = async(currentPassword:BodyInit)=>{
       const response = await fetch(`http://localhost:3000/users/password`,{
       method:'POST',
       headers: {

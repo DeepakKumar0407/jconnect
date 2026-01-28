@@ -8,7 +8,7 @@ const Notifications = () => {
    const [yaxis,setYAxis] = useState(window.innerHeight)
    const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
    const email = currentUser.userEmail
-  const { data:user } = useQuery({
+  const { data:user,isPending,error } = useQuery({
   queryKey: ['user',email],
   queryFn: async () => {
     const response = await fetch(
@@ -22,7 +22,7 @@ const Notifications = () => {
     return await response.json()
   },
   })
-  const { data:notifications} = useQuery<iNotification[]>({
+  const { data:notifications,isPending:notifPending,error:notifError} = useQuery<iNotification[]>({
   queryKey: ['notification'],
   queryFn: async () => {
     const response = await fetch(
@@ -44,6 +44,18 @@ const Notifications = () => {
     
       return () => window.removeEventListener("resize", updateHeight)
     }, [])
+    if (isPending||notifPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error||notifError) return (
+    <div className="div">
+      {error&&<h1>An error has occurred: {error.message}</h1>}
+      {notifError&&<h1>An error has occurred: {notifError.message}</h1>}
+    </div>
+  )
   return (
     <div className="div overflow-auto " style={{height:`${yaxis}px`}}>
       <h1 className="mb-5">Notifications</h1>

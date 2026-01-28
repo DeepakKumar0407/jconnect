@@ -13,7 +13,7 @@ import { jwtDecode } from "jwt-decode"
 const Navbar = () => {
    const currentUser:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)//jwt
    const email = currentUser.userEmail
-  const { data:user } = useQuery<iUser>({
+  const { data:user,isPending,error } = useQuery<iUser>({
   queryKey: ['user',email],
   queryFn: async () => {
     const response = await fetch(
@@ -27,6 +27,17 @@ const Navbar = () => {
     return await response.json()
   },
   })
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className="md:w-1/5 w-fit p-5 flex flex-col justify-baseline gap-3 flex-wrap md:text-base lg:text-xl border-r-2 border-white/20 top-0 left-0">
       <div className="flex justify-between gap-2 items-center">
@@ -38,7 +49,7 @@ const Navbar = () => {
       <hr></hr>
        <div className="flex flex-col justify-baseline gap-5 lg:text-2xl">
         <Link to="/home" className="flex gap-2 items-center"><HomeIcon className="icon"/> Home</Link>
-        <Link to="chat_room" className="flex gap-2 items-center"><ChatBubbleLeftEllipsisIcon className="icon"/> Chat Room</Link>
+        <Link to="chat_room_list" className="flex gap-2 items-center"><ChatBubbleLeftEllipsisIcon className="icon"/> Chat Room</Link>
         <Link to={`profile/${user?._id}`} className="flex gap-2 items-center"><UserCircleIcon className="icon"/> Profile</Link>
         <Link to="saved" className="flex gap-2 items-center"><BookmarkSquareIcon className="icon" /> Saved Posts</Link>
         <hr></hr>

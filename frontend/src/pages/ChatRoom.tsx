@@ -5,6 +5,7 @@ import type { iChat, iRoom, JWTStructure } from "../components/interfaces"
 import { jwtDecode } from "jwt-decode"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
+import DeleteChat from "../components/DeleteChat"
 
 const ChatRoom = () => {
   const socketRef = useRef<Socket | null>(null)
@@ -32,7 +33,7 @@ const ChatRoom = () => {
         mutate({senderId:senderId,receiverId:receiverId})
         }
       },[])
-  const {data:chats} = useQuery({
+  const {data:chats,isPending,error} = useQuery({
     queryKey:['chats',roomId],
     queryFn: async()=>{
       const response = await fetch(`http://localhost:3000/chats/${roomId}`)
@@ -81,14 +82,25 @@ const ChatRoom = () => {
   if (!chatRef.current) return;
   chatRef.current.scrollTop = chatRef.current.scrollHeight;
 }, [chat]);
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className="div overflow-y-auto" style={{ height: `${yaxis}px` }}>
       <div className="flex flex-col justify-between pb-22 h-full">
         <div ref={chatRef} className="overflow-auto h-full w-full chat mb-5">
-        {chat?.map((m, index: number) => (
+        {chat?.map((m:iChat, index: number) => (
         <div key={index} className=" w-full flex justify-between lg:text-xl">
         <div className="w-1/2 flex justify-baseline overflow-clip">{m.senderId!==senderId&&<p className="p-2 rounded bg-white/20 mb-4 w-fit ">{m.text}</p>}</div>
-        <div className="w-1/2 flex justify-end overflow-clip">{m.senderId===senderId&&<p className="p-2 rounded bg-white/20 mb-4 w-fit ">{m.text}</p>}</div>
+        <div className="w-1/2 flex justify-end overflow-clip">{m.senderId===senderId&&<div className="bg-white/20 p-2 rounded mb-4 w-fit text-right"><DeleteChat chat={m}/><p className="">{m.text}</p></div>}</div>
         </div>
       ))}
       </div>

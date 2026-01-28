@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
-import type { CommentNode} from "./interfaces"
+import type { CommentNode, JWTStructure} from "./interfaces"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Link, Outlet } from "react-router-dom"
 import { HeartIcon, TrashIcon, ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/solid"
+import { jwtDecode } from "jwt-decode"
 
 const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:string|undefined }) => {
   const [likeStatus, setLikeStatus] = useState<boolean>()
+  const token:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)
+  const currentUserId = token.userId
   const [state,setState] = useState('comment')
   const { data: likes } = useQuery({
     queryKey: ["likeStatus", comment],
@@ -33,7 +36,7 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
     const setInitialLike = ()=> setLikeStatus(like)
     setInitialLike()
   }, [likes])
-  const { data: user} = useQuery({
+  const { data: user,isPending,error} = useQuery({
     queryKey: ["comment", comment],
     queryFn: async () => {
       const response = await fetch(
@@ -73,6 +76,17 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
   const handleDelete = async () => {
     mutateLikeDelete()
   }
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
      state==='comment'?(<div className="w-full">
        <div className="flex flex-col justify-baseline gap-1">
@@ -104,9 +118,9 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
               <button onClick={handleLikeClick}><HeartIcon className="icon text-white cursor-pointer"/></button>
             )}
           </p>
-          <p>
+         {comment.userId===currentUserId&&<p>
             <button onClick={handleDelete} ><TrashIcon className="icon text-red-600 cursor-pointer"/></button>
-          </p>
+          </p>}
           <Link to={`/post_details/${postId}/reply/${comment.postId}/${comment._id}`}><button onClick={handleStateClick}><ChatBubbleBottomCenterTextIcon className="icon"/></button></Link>
         </div>
       </div>

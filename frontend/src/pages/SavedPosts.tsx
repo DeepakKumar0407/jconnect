@@ -9,7 +9,7 @@ const SavedPosts = () => {
     const userId = currentUser.userId
   const scrollRef = useRef<HTMLDivElement>(null)
   const [yaxis,setYAxis] = useState(window.innerHeight)
-  const { data:savedPosts } = useQuery({
+  const { data:savedPosts,isPending,error } = useQuery({
   queryKey: ['savedPosts',userId],
   queryFn: async () => {
     const response = await fetch(
@@ -51,6 +51,17 @@ useEffect(() => {
 
   return () => window.removeEventListener("resize", updateHeight)
 }, [])
+  if (isPending) return (
+    <div className="div">
+      <h1>Loading...</h1>
+    </div>
+  )
+
+  if (error) return (
+    <div className="div">
+      <h1>An error has occurred: {error.message}</h1>
+    </div>
+  )
   return (
     <div className={`div overflow-auto`} ref={scrollRef} style={{height:`${yaxis}px`}}>
       <h1>Saved Posts</h1>

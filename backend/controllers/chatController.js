@@ -11,4 +11,15 @@ const getChat = async(req,res)=>{
     }
 }
 
-export {getChat}
+const deleteChat = async(req,res)=>{
+    try {
+        const id = req.params.id
+        const deletedChat = await ChatModel.findByIdAndDelete(id)
+        console.log('reached')
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
+export {getChat,deleteChat}
