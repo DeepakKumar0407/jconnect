@@ -79,12 +79,15 @@ const PostDetail = () => {
     })
   }
   const handleDelete = async()=>{
-    await fetch(`http://localhost:3000/posts/${post?._id}`,{
+    const res = await fetch(`http://localhost:3000/posts/${post?._id}`,{
       method:"DELETE",
        headers:{
         'authorization':`Bearer ${localStorage.getItem('jwt_token')!}`,
       }
     })
+    if(res.ok){
+      navigate('/home')
+    }
   }
   const handleBack = ()=>{
     navigate(-1)

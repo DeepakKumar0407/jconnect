@@ -3,6 +3,7 @@ import type { iPost } from "./interfaces"
 import { useMutation } from "@tanstack/react-query"
 import { PhotoIcon } from "@heroicons/react/24/solid"
 import { VideoCameraIcon } from "@heroicons/react/24/solid"
+import { Editor, EditorProvider } from "react-simple-wysiwyg"
 
 const FormPost = ({state}:{state:string}) => {
   const [contentType,setContentType] = useState<string>('image')
@@ -26,13 +27,6 @@ const FormPost = ({state}:{state:string}) => {
         imageContent:null
       }))
   }
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{
-    const {name,value} = e.target
-    setPostData(state=>({
-      ...state,
-      [name]:value
-    }))
-  }
   const submitPost = async(data:BodyInit)=>{
           await fetch("http://localhost:3000/posts",{
           method:'POST',
@@ -54,7 +48,9 @@ const FormPost = ({state}:{state:string}) => {
   return (
     <div className={`${state}`}>
       <form className="flex flex-col w-9/10 border-2 border-white/20 rounded mx-auto p-2 pt-4" onSubmit={handleSubmit}>
-      <textarea value={postData.textContent} name="textContent" placeholder="Type something..." onChange={handleChange} required className="border-l-2 border-white/20 w-8/10 mx-auto p-2" rows={5}>Make a post</textarea>
+      <EditorProvider>
+      <Editor value={postData.textContent} onChange={(e)=>setPostData(state=>({...state,textContent:e.target.value}))} className="border-l-2 border-white/20 w-8/10 mx-auto p-2" placeholder="type something..." />
+      </EditorProvider>
       <span className="w-8/10 mx-auto">
       <button onClick={handleClickImage} type="button" className="p-2 cursor-pointer"><PhotoIcon className="icon"/></button>
       <button onClick={handleClickVideo} type="button" className="p-2 cursor-pointer"><VideoCameraIcon className="icon"/></button>

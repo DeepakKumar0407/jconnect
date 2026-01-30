@@ -40,10 +40,6 @@ const CommentByUser = ({user}:{user:iUser|undefined}) => {
          </Link>
         </div>
       ))}
-      {/* <p>cycle all comments</p>
-      <p>icon</p><p>username</p>
-      <p>text content</p>
-      <p>image content</p> */}
     </div>
   )
 }

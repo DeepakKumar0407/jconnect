@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query"
 import type { iPostRecived } from "./interfaces"
 import { Link } from "react-router-dom"
 
-
 const PostStructure = ({post}:{post:iPostRecived}) => {
   const {data:user,isPending,error} = useQuery({
     queryKey:['user',post.userId],
@@ -40,7 +39,7 @@ const PostStructure = ({post}:{post:iPostRecived}) => {
       </div>
       </Link>
       <Link to={`/post_details/${post._id}`} className="w-full">
-      <p className="mt-2 lg:text-2xl mb-2">{post.textContent}</p>
+      <div className="mt-2 lg:text-2xl mb-2"><p dangerouslySetInnerHTML={{ __html: post.textContent }} /></div>
       {post.imageContent!=="null"&&<img src={post.imageContent} className="w-fit"></img>}
       {post.videoContent!=="null"&& 
       <video controls>
