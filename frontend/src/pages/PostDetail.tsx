@@ -16,6 +16,7 @@ const PostDetail = () => {
   const token:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)
   const currentUserId = token.userId
   const [likeStatus,setLikeStatus] = useState(false)
+  const [likeCount,setLikeCount] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [yaxis,setYAxis] = useState(window.innerHeight)
   const navigate = useNavigate()
@@ -33,6 +34,12 @@ const PostDetail = () => {
     return await response.json()
   },
   })
+  useEffect(()=>{
+    const syncLikeCount = ()=>{
+      setLikeCount(post?.likesCount)
+    }
+    syncLikeCount()
+  },[post?.likesCount])
   const { data } = useQuery({
   queryKey: ['likeStatus',post],
   queryFn: async () => {
@@ -153,14 +160,14 @@ useEffect(() => {
         </Link>
         {post.userId===currentUserId&&<button onClick={handleDelete}><TrashIcon className="icon text-red-600 cursor-pointer"/></button>}
       </div>
-      <p className="mt-2 lg:text-2xl mb-2">{post?.textContent}</p>
+      <p className="mt-2 lg:text-2xl mb-2 wrap-anywhere">{post?.textContent}</p>
       {post?.imageContent!=="null"&&<img src={post?.imageContent}></img>}
       {post?.videoContent&&post?.videoContent!=="null"&& <video controls>
         <source src={post?.videoContent} type="video/mp4"></source>
       </video>}
       <div className="flex justify-baseline gap-8 items-center mt-4 mb-4 md:text-base">
-        <p>{likeStatus?(<button onClick={handleLikeClick}><HeartIcon className="icon text-green-600 cursor-pointer"/></button>):
-        (<button onClick={handleLikeClick}><HeartIcon className="icon text-white cursor-pointer"/></button>)} {post?.likesCount}</p>
+        <p>{likeStatus?(<button onClick={()=>{handleLikeClick();setLikeCount(likeCount-1)}} ><HeartIcon className="icon text-green-600 cursor-pointer" /></button>):
+        (<button onClick={()=>{handleLikeClick();setLikeCount(likeCount+1)}}><HeartIcon className="icon text-white cursor-pointer"/></button>)} {likeCount}</p>
         <button onClick={handleSaveClick}><BookmarkSquareIcon className="icon"/></button>
       </div>
       <FormComment postId={post&&post._id} type="comment"/>

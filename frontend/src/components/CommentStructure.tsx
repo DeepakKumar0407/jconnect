@@ -10,6 +10,7 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
   const token:JWTStructure = jwtDecode(localStorage.getItem('jwt_token')!)
   const currentUserId = token.userId
   const [state,setState] = useState('comment')
+  const [likeCount,setLikeCount] = useState(0)
   const { data: likes } = useQuery({
     queryKey: ["likeStatus", comment],
     queryFn: async () => {
@@ -24,6 +25,12 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
       return await response.json()
     },
   })
+   useEffect(()=>{
+    const syncLikeCount = ()=>{
+      setLikeCount(comment?.likesCount)
+    }
+    syncLikeCount()
+  },[comment?.likesCount])
   const handleStateClick = ()=>{
     if(state==='comment'){
       setState('')
@@ -113,10 +120,10 @@ const CommentStructure = ({ comment,postId }: { comment: CommentNode,postId:stri
         <div className="flex justify-baseline gap-5 mt-2">
           <p>
             {likeStatus ? (
-              <button onClick={handleLikeClick}><HeartIcon className="icon text-green-600 cursor-pointer"/></button>
+              <button onClick={()=>{handleLikeClick();setLikeCount(likeCount-1)}}><HeartIcon className="icon text-green-600 cursor-pointer"/></button>
             ) : (
-              <button onClick={handleLikeClick}><HeartIcon className="icon text-white cursor-pointer"/></button>
-            )}
+              <button onClick={()=>{handleLikeClick();setLikeCount(likeCount+1)}}><HeartIcon className="icon text-white cursor-pointer"/></button>
+            )} {likeCount}
           </p>
          {comment.userId===currentUserId&&<p>
             <button onClick={handleDelete} ><TrashIcon className="icon text-red-600 cursor-pointer"/></button>

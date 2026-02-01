@@ -62,16 +62,17 @@ const Profile = () => {
     </div>
   )
   return (
-    <div className="div overflow-auto p-2" style={{height:`${yaxis}px`}}>
+    <div className="div overflow-y-auto p-2 flex-wrap" style={{height:`${yaxis}px`}}>
      <div className="w-full">
       {user&&userCurrent&&<UserProfile user={user} userCurrent={userCurrent}/>}
-      <div className="ml-5 lg:text-2xl flex justify-baseline gap-5">
+      <div className="lg:ml-5 lg:text-2xl flex justify-baseline gap-5">
         <button onClick={()=>setSection('posts')} className={`cursor-pointer pb-2 ${selection==='posts'?'border-b-2':''} border-green-600`}>Post</button>
         <button onClick={()=>setSection('comments')} className={`cursor-pointer pb-2 ${selection==='comments'?'border-b-2':''} border-green-600`}>Comments</button>
+        {/* <button onClick={()=>setSection('following')} className={`cursor-pointer pb-2 ${selection==='following'?'border-b-2':''} border-green-600`}>Following</button>
+        <button onClick={()=>setSection('followers')} className={`cursor-pointer pb-2 ${selection==='followers'?'border-b-2':''} border-green-600`}>Followers</button> */}
       </div>
-      {selection==='posts'?
-      (<div>{user&&<PostByUser user={user}/>}</div>)
-      :(<div>{user&&<CommentByUser user={user}/>}</div>)}
+      {selection==='posts'&&<div>{user&&<PostByUser user={user}/>}</div>}
+      {selection==='comments'&&<div>{user&&<CommentByUser user={user}/>}</div>}
     
     
     </div>

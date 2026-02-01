@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const FormLogin = () => {
   const navigate = useNavigate()
+  const [loginError,setLoginError] = useState(false)
   const initialData:iLogin = {
     email:"",
     password:""
@@ -18,6 +19,7 @@ const FormLogin = () => {
   }
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
+    setLoginError(false)
     const res = await fetch('http://localhost:3000/auth/login',{
            method:"POST",
         headers: {
@@ -27,6 +29,7 @@ const FormLogin = () => {
         })
     const token = await res.json()
     if(!res.ok){
+      setLoginError(true)
       console.log('login failed')
     }
     if(token.length>0){
@@ -44,6 +47,7 @@ const FormLogin = () => {
         <label htmlFor="password">Password: </label><input id="password" type="password" name="password" value={userData.password} onChange={handleChange} placeholder="password" className="border-2 border-white/80 rounded p-2" required></input>
         <div className="w-full flex justify-center"><button className="bg-green-600 hover:bg-green-500 rounded w-1/3 p-2">Log in</button></div>
       </form>
+      {loginError&&<p>Login Failed</p>}
       <div className="w-full flex justify-end text-blue-700"><Link to="/register">register</Link></div>
     </div>
     </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { iComment } from "./interfaces";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 
 const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:string|null,type:string}) => {
     const id = type
@@ -50,10 +51,12 @@ const FormComment = ({postId,parentId,type}:{postId:string|undefined,parentId?:s
   return (
     <div>
     <div>
-      <form className="w-full flex justify-baseline gap-5" onSubmit={handleSubmit}>
-      <textarea className="w-1/2 placeholder:text-white placeholder:text-sm border-2 border-white rounded p-1" rows={1} name="textContent" value={comment.textContent} onChange={handleChange} placeholder={`Make a ${type}`} required></textarea>
-      <label htmlFor={id==='comment'?"comment":"reply"} onClick={()=>console.log(type)}>Image<input id={id==='comment'?"comment":"reply"} type="file" name="imageContent" onChange={(e)=>{setComment(state=>({...state,imageContent:e.target.files?.[0]||null}))}} className="hidden"></input></label>
-      <button>Post</button>
+      <form className="w-full flex flex-col lg:flex-row justify-baseline gap-3" onSubmit={handleSubmit}>
+      <textarea className="lg:w-1/2 placeholder:text-white placeholder:text-sm border-2 border-white rounded p-1 w-full" rows={1} name="textContent" value={comment.textContent} onChange={handleChange} placeholder={`Make a ${type}`} required></textarea>
+      <div className="flex justify-baseline gap-3">
+        <label htmlFor={id==='comment'?"comment":"reply"} onClick={()=>console.log(type)}><PhotoIcon className="icon"/><input id={id==='comment'?"comment":"reply"} type="file" name="imageContent" onChange={(e)=>{setComment(state=>({...state,imageContent:e.target.files?.[0]||null}))}} className="hidden"></input></label>
+        <button>Post</button>
+      </div>
       </form>
       <div>{comment.imageContent&&<img src={URL.createObjectURL(comment.imageContent)} className="w-1/2 mt-2 mb-2"></img>}</div>
       {id==='reply'?(<Link to={`/post_details/${postId}`}>Back</Link>):("")}

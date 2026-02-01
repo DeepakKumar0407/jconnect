@@ -29,7 +29,7 @@ export interface JWTStructure{
 export interface iUser {
   _id?:string;
   name:string;
-  profilePic?:File|null;
+  profilePic?:File|null|string;
   userName:string;
   email:string;
   phone:string;

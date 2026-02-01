@@ -98,7 +98,7 @@ const ChatRoom = () => {
       <div className="flex flex-col justify-between pb-22 h-full">
         <div ref={chatRef} className="overflow-auto h-full w-full chat mb-5">
         {chat?.map((m:iChat, index: number) => (
-        <div key={index} className=" w-full flex justify-between lg:text-xl">
+        <div key={index} className=" w-full flex justify-between lg:text-xl wrap-anywhere">
         <div className="w-1/2 flex justify-baseline overflow-clip">{m.senderId!==senderId&&<p className="p-2 rounded bg-white/20 mb-4 w-fit ">{m.text}</p>}</div>
         <div className="w-1/2 flex justify-end overflow-clip">{m.senderId===senderId&&<div className="bg-white/20 p-2 rounded mb-4 w-fit text-right"><DeleteChat chat={m}/><p className="">{m.text}</p></div>}</div>
         </div>

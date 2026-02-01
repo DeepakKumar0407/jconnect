@@ -29,7 +29,7 @@ const PostByUser = ({user}:{user:iUser|undefined}) => {
     </div>
   )
   return (
-    <div className="w-full ml-5 mb-22 ">
+    <div className="w-full lg:ml-5 mb-22 ">
         {posts?.map((post:iPostRecived)=>(
             <div key={post._id}>
                   

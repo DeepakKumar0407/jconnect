@@ -6,7 +6,7 @@ import streamifier from "streamifier";
 
 const getAllPosts= async (req,res)=>{
     try {
-        const post = await PostModel.find()
+        const post = await PostModel.find().sort({createdAt:-1})
         res.status(200).json(post)
     } catch (error) {
         console.log(error)
@@ -17,7 +17,7 @@ const getAllPosts= async (req,res)=>{
 const getAllPostsByUser=async(req,res)=>{
     try {
         const id = req.params.id
-        const post = await PostModel.find({userId:id})
+        const post = await PostModel.find({userId:id}).sort({createdAt:-1})
         res.status(200).json(post)
     } catch (error) {
         console.log(error)
@@ -28,7 +28,7 @@ const getAllPostsByUser=async(req,res)=>{
 const getSearchPosts= async (req,res)=>{
     try {
         const blob = req.params.blob
-        const users = await PostModel.find({$or:[{textContent:{$regex:blob,$options:'i'}},{userName:{$regex:blob,$options:'i'}}]})
+        const users = await PostModel.find({$or:[{textContent:{$regex:blob,$options:'i'}},{userName:{$regex:blob,$options:'i'}}]}).sort({createdAt:-1})
         res.status(200).json(users)
     } catch (error) {
         console.log(error)

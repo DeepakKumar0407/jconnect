@@ -5,7 +5,7 @@ import streamifier from "streamifier";
 
 const getAllUser= async (req,res)=>{
     try {
-        const user = await UserModel.find()
+        const user = await UserModel.find().sort({createdAt:-1})
         res.status(200).json(user)
     } catch (error) {
         console.log(error)
@@ -16,7 +16,7 @@ const getAllUser= async (req,res)=>{
 const getSearchUsers = async (req,res)=>{
     try {
         const blob = req.params.blob
-        const users = await UserModel.find({$or:[{name:{$regex:blob,$options:'i'}},{userName:{$regex:blob,$options:'i'}},{email:{$regex:blob,$options:'i'}}]})
+        const users = await UserModel.find({$or:[{name:{$regex:blob,$options:'i'}},{userName:{$regex:blob,$options:'i'}},{email:{$regex:blob,$options:'i'}}]}).sort({createdAt:-1})
         res.status(200).json(users)
     } catch (error) {
         console.log(error)
@@ -30,6 +30,28 @@ const getAllFriends= async (req,res)=>{
         const followers = await UserModel.findOne({_id:id}).populate('followers')
         const following = await UserModel.findOne({_id:id}).populate('following')
         res.status(200).json([...followers.followers,...following.following])
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
+const getAllFollowers= async (req,res)=>{
+    try {
+        const id = req.params.id
+        const followers = await UserModel.findOne({_id:id}).populate('followers')
+        res.status(200).json(followers)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
+const getAllFollowing= async (req,res)=>{
+    try {
+        const id = req.params.id
+        const following = await UserModel.findOne({_id:id}).populate('following')
+        res.status(200).json(following)
     } catch (error) {
         console.log(error)
         res.status(500).json(error)
@@ -74,7 +96,7 @@ const getLikedPosts = async(req,res)=>{
 const getSavedPosts = async(req,res)=>{
       try {
         const id = req.params.id
-        const user = await UserModel.findById(id).populate('savedPosts')
+        const user = await UserModel.findById(id).populate('savedPosts').sort({createdAt:-1})
         const savedPosts = user.savedPosts
         res.status(200).json(savedPosts)
     } catch (error) {
@@ -191,4 +213,4 @@ const deleteUser=async(req,res)=>{
     }
 }
 
-export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,comparePassword,getLikedPosts,getAllFriends,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}
+export {getAllUser,getOneUserByEmail,getOneUserById,createUser,updateUser,deleteUser,comparePassword,getLikedPosts,getAllFriends,getAllFollowers,getAllFollowing,updateSavedStatus,getSavedPosts,getSearchUsers,updateFollowers}

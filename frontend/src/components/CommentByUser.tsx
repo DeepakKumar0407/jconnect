@@ -30,9 +30,9 @@ const CommentByUser = ({user}:{user:iUser|undefined}) => {
     </div>
   )
   return (
-    <div className="w-full flex flex-col gap-3 justify-baseline ml-5 mt-3 mb-22">
+    <div className="w-full flex flex-col gap-3 justify-baseline lg:ml-5 mt-3 mb-22">
       {data?.map((comment:iCommentRecived)=>(
-        <div key={comment._id} className="bg-white/20 w-1/2 overflow-clip lg:text-xl p-2 rounded">
+        <div key={comment._id} className="bg-white/20 w-full md:w-1/2 overflow-clip lg:text-xl p-2 rounded">
          <Link to={`/post_details/${comment.postId}`}>
           <PostNameByComment comment={comment}/>
           <p className="mb-2">{comment.textContent}</p>

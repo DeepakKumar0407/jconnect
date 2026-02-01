@@ -39,7 +39,7 @@ const PostStructure = ({post}:{post:iPostRecived}) => {
       </div>
       </Link>
       <Link to={`/post_details/${post._id}`} className="w-full">
-      <div className="mt-2 lg:text-2xl mb-2"><p dangerouslySetInnerHTML={{ __html: post.textContent }} /></div>
+      <div className="mt-2 lg:text-2xl mb-2 wrap-anywhere"><p dangerouslySetInnerHTML={{ __html: post.textContent }} /></div>
       {post.imageContent!=="null"&&<img src={post.imageContent} className="w-fit"></img>}
       {post.videoContent!=="null"&& 
       <video controls>
